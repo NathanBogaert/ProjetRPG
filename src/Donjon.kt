@@ -12,7 +12,7 @@ class Donjon() {
         var porteEstPresente: Boolean
         var porteOuestPresente: Boolean
         println("Le donjon contient $nombreDeSalles salles")
-        for (i in 1..nombreDeSalles) {
+        (1..nombreDeSalles).forEach { i ->
             monstrePresent = Random.nextBoolean()
             coffrePresent = Random.nextBoolean()
             porteNordPresente = Random.nextBoolean()

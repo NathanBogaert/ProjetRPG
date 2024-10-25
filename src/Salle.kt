@@ -1,8 +1,8 @@
 class Salle(
-    val contientUnMonstre: Boolean,
-    val contientUnCoffre: Boolean,
+    val contientMonstre: Boolean,
+    val contientCoffre: Boolean,
     val porteNordDispo: Boolean,
     val porteSudDispo: Boolean,
     val porteEstDispo: Boolean,
-    val porteOuestDispo: Boolean,
+    val porteOuestDispo: Boolean
 )

@@ -1,15 +1,17 @@
+import personnage.Personnage
 import java.util.*
 
 // Sujet: https://github.com/remihamy1/ProjetRPG/tree/main
 
 fun main() {
-    //val personnage = Personnage()
-    val donjon = Donjon()
+    val joueur = Personnage()
+    joueur.afficherInfo()
+    //val donjon = Donjon()
 
-    lancementDuJeu(donjon, Personnage())
+    //lancementDuJeu(donjon)
 }
 
-fun lancementDuJeu(donjon: Donjon, Personnage: Personnage) {
+fun lancementDuJeu(donjon: Donjon) {
     var personnagePosition = intArrayOf(0, 0)
     var sortirDuJeu = false
     var deplacementVoulu: String
@@ -20,7 +22,6 @@ fun lancementDuJeu(donjon: Donjon, Personnage: Personnage) {
     var porteOuestDispo: Boolean
     var porteEstDispo: Boolean
     var contientMonstre: Boolean
-    var contientCoffre: Boolean
     var prochainDeplacement : IntArray
     while (!sortirDuJeu) {
         salleActuelle = donjon.donjon[personnagePosition[0]][personnagePosition[1]]

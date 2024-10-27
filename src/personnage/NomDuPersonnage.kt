@@ -7,10 +7,10 @@ class NomDuPersonnage {
         do {
             println("Entrez le nom de votre personnage :")
             nom = readln()
-        } while (!nomValide())
+        } while (!verifierNom())
     }
 
-    private fun nomValide(): Boolean {
+    private fun verifierNom(): Boolean {
         if (nom.length in 6..12) {
             return true
         }

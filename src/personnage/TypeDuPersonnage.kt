@@ -13,10 +13,10 @@ class TypeDuPersonnage {
                 """.trimIndent()
             )
             type = readln()
-        } while (!typeValide())
+        } while (!verifierType())
     }
 
-    private fun typeValide(): Boolean {
+    private fun verifierType(): Boolean {
         if (type == "1") {
             type = "Guerrier"
             return true

@@ -1,7 +1,7 @@
 package personnage
 
 class NomDuPersonnage {
-    private var nom: String = ""
+    var nom: String = ""
 
     fun ajouterNom() {
         do {
@@ -10,7 +10,7 @@ class NomDuPersonnage {
         } while (!verifierNom())
     }
 
-    private fun verifierNom(): Boolean {
+    fun verifierNom(): Boolean {
         if (nom.length in 6..12) {
             return true
         }

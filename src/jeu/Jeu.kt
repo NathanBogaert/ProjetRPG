@@ -9,6 +9,7 @@ class Jeu {
 
     fun lancementDuJeu() {
         val personnage = Personnage()
+        personnage.creerLePersonnage()
         personnage.afficherInfo()
 
         val donjon = Donjon()

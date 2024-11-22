@@ -5,7 +5,7 @@ class Personnage {
     private val type: TypeDuPersonnage = TypeDuPersonnage()
     private val statistiques: Statistiques = Statistiques()
 
-    init {
+    fun creerLePersonnage() {
         nom.ajouterNom()
         type.selectionnerType()
         statistiques.initiliserStatistiques(type)

@@ -1,7 +1,7 @@
 package personnage
 
 class TypeDuPersonnage {
-    private lateinit var type: String
+    lateinit var type: String
 
     fun selectionnerType() {
         do {
@@ -16,7 +16,7 @@ class TypeDuPersonnage {
         } while (!verifierType())
     }
 
-    private fun verifierType(): Boolean {
+    fun verifierType(): Boolean {
         if (type == "1") {
             type = "Guerrier"
             return true

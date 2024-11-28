@@ -1,7 +1,9 @@
-import jeu.Jeu
+import personnage.domain.Personnage
 
 // Sujet: https://github.com/remihamy1/ProjetRPG/tree/main
 
 fun main() {
-    Jeu().lancementDuJeu()
+    val personnage = Personnage()
+    personnage.nom.ajouterNom()
+    personnage.type.choixDuType()
 }

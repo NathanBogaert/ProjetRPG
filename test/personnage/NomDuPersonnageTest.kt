@@ -1,9 +1,10 @@
 package personnage
 
 import org.junit.jupiter.api.Test
+import personnage.domain.NomDuPersonnage
 
 class NomDuPersonnageTest {
-    private var nomDuPersonnage = NomDuPersonnage()
+    private val nomDuPersonnage = NomDuPersonnage()
 
     @Test
     fun nomValide() {

@@ -1,4 +1,4 @@
-package personnage
+package personnage.domain
 
 class NomDuPersonnage {
     var nom: String = ""
@@ -19,6 +19,6 @@ class NomDuPersonnage {
     }
 
     fun afficherNom(): String {
-        return "Nom : $nom"
+        return nom
     }
 }

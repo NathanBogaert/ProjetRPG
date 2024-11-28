@@ -1,7 +1,5 @@
-package jeu
+package donjon
 
-import donjon.Donjon
-import donjon.Salle
 import java.util.*
 
 class DeplacementDuPersonnage {

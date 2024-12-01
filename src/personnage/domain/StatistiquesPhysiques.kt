@@ -1,13 +1,19 @@
 package personnage.domain
 
-class StatistiquesPhysiques {
-    private var force: Int = 0
-    private var defense: Int = 0
-    private var agilite: Int = 0
-    private var chance: Int = 0
-    private var endurance: Int = 0
-
-    fun afficherStatistiquesPhysiques():String {
-        return "Force: $force\nDefense: $defense\nAgilite: $agilite\nChance: $chance\nEndurance: $endurance"
+data class StatistiquesPhysiques (
+    private var pointsDeVie: Int ,
+    private var force: Int,
+    private var defense: Int,
+    private var agilite: Int,
+    private var endurance: Int
+) {
+    fun afficherStatistiquesPhysiques(): String {
+        return """Statistiques physiques:
+            |Pts de vie: $pointsDeVie
+            |Force: $force
+            |Defense: $defense
+            |Agilite: $agilite
+            |Endurance: $endurance
+        """.trimMargin()
     }
 }

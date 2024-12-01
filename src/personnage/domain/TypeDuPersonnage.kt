@@ -12,7 +12,7 @@ class TypeDuPersonnage {
     fun choixDuType() {
         do {
             println(
-                """Choisissez le type de votre personnage (1, 2, 3) :
+                """Choisis le type de ton personnage (1, 2, 3) :
                     1. Guerrier
                     2. Mage
                     3. Voleur
@@ -21,6 +21,7 @@ class TypeDuPersonnage {
             typeString = readln()
         } while (!verifierType())
         type = typesDisponibles[typeString]!!
+        type.ajouterStatistiques()
     }
 
     fun verifierType(): Boolean {
@@ -31,7 +32,7 @@ class TypeDuPersonnage {
         return false
     }
 
-    fun afficherType(): StatistiquesDuType {
-        return type
+    fun afficherStatistiques(): String {
+        return type.afficherStatistiques()
     }
 }

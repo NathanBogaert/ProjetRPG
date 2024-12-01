@@ -6,4 +6,5 @@ fun main() {
     val personnage = Personnage()
     personnage.nom.ajouterNom()
     personnage.type.choixDuType()
+    personnage.afficherInfo()
 }

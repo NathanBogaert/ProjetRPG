@@ -5,6 +5,8 @@ class Personnage {
     val type: TypeDuPersonnage = TypeDuPersonnage()
 
     fun afficherInfo() {
-        return println("${nom.afficherNom()}\n${type.afficherType()}")
+        return println("""Nom: ${nom.afficherNom()}
+            |${type.afficherStatistiques()}""".trimMargin()
+        )
     }
 }

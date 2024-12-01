@@ -1,11 +1,19 @@
 package personnage.domain
 
-class StatistiquesMagiques {
-    private var intelligence: Int = 0
-    private var resistanceMagiques: Int = 0
-    private var esprit: Int = 0
-
+data class StatistiquesMagiques (
+    private var pointsDeMana: Int,
+    private var intelligence: Int,
+    private var resistanceMagiques: Int,
+    private var chance: Int,
+    private var esprit: Int
+) {
     fun afficherStatistiquesMagiques(): String {
-        return "Intelligence: $intelligence\nResistance magiques: $resistanceMagiques\nEsprit: $esprit"
+        return """Statistiques Magiques:
+            |Pts de mana: $pointsDeMana
+            |Intelligence: $intelligence
+            |Résistance magiques: $resistanceMagiques
+            |Chance: $chance
+            |Esprit: $esprit
+        """.trimMargin()
     }
 }

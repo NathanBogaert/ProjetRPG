@@ -1,10 +1,12 @@
-package carte
+package grille
+
+import carte.Case
 
 class Grille {
-    private val ligne = 5
-    private val colonne = 5
+    val ligne = 5
+    val colonne = 5
     private val grille = List(ligne) { List(colonne) { Case(murPresent = true) } }
-    private var positionCaseActuelle = intArrayOf(0, 0)
+    lateinit var positionGrille: PositionGrille
 
     fun verifierPresenceMur(positionGrilleX: Int, positionGrilleY: Int, maxPositionGrilleX: Int, maxPositionGrilleY: Int ) {
         when {

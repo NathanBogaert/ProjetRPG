@@ -1,4 +1,6 @@
-package carte
+package grille
+
+import carte.Case
 
 class SupprimerMurGrilleCoinHautGauche : PresenceMur {
     override fun supprimerMursDeLaGrille(grille: List<List<Case>>) {

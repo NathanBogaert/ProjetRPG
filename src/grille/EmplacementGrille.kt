@@ -1,4 +1,4 @@
-package carte
+package grille
 
 data class EmplacementGrille (val x: Int, val y: Int)
 

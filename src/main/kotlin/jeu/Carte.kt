@@ -1,5 +1,8 @@
 package jeu
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 class Carte {
     private val largeur = 10
     private val hauteur = 10

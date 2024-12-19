@@ -1,11 +1,18 @@
 package jeu
 
-interface ContenuCase
+import kotlinx.serialization.Serializable
 
-object Vide: ContenuCase
+@Serializable
+sealed interface ContenuCase
 
-object Mur: ContenuCase
+@Serializable
+data object Vide: ContenuCase
 
-object Monstre: ContenuCase
+@Serializable
+data object Mur: ContenuCase
 
-object Tresor: ContenuCase
+@Serializable
+data object Monstre: ContenuCase
+
+@Serializable
+data object Tresor: ContenuCase

@@ -1,5 +1,8 @@
 package personnage
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class StatistiquesPhysiques (
     private var pointsDeVie: Int ,
     private var force: Int,

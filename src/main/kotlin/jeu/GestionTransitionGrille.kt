@@ -1,6 +1,6 @@
 package jeu
 
-class GestionTransitionGrille(private val carte: Carte) {
+class GestionTransitionGrille(val carte: Carte) {
     fun changerGrille(direction: Direction, deplacement: Deplacement): Boolean {
         val positionGrilleActuelle = carte.grilles.entries.firstOrNull { it.value == deplacement.grilleActuelle }?.key ?: return false
         val positionNouvelleGrille = positionGrilleActuelle.copy().apply { mouvement(direction) }

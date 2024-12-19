@@ -1,5 +1,8 @@
 package personnage
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 class NomDuPersonnage {
     var nom: String = ""
 

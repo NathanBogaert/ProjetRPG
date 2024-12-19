@@ -1,7 +1,9 @@
 package jeu
 
+import kotlinx.serialization.Serializable
 import kotlin.random.Random
 
+@Serializable
 class Grille {
     val largeur = 5
     val hauteur = 5

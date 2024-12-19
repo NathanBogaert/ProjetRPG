@@ -3,12 +3,16 @@ package jeu
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import personnage.Personnage
+import sauvegarde.Sauvegarde
+import sauvegarde.SauvegardeDuJeu
 
 class DeplacementTest {
     private lateinit var carte: Carte
     private lateinit var grille: Grille
     private lateinit var gestionTransitionGrille: GestionTransitionGrille
     private lateinit var deplacement: Deplacement
+    private lateinit var sauvegardeJeu: SauvegardeDuJeu
 
     @BeforeEach
     fun setUp() {
@@ -17,7 +21,8 @@ class DeplacementTest {
         grille = Grille()
         grille.creerGrille()
         gestionTransitionGrille = GestionTransitionGrille(carte)
-        deplacement = Deplacement(grille, gestionTransitionGrille)
+        sauvegardeJeu = Sauvegarde()
+        deplacement = Deplacement(grille, gestionTransitionGrille, sauvegardeJeu, )
     }
 
     @Test
@@ -79,27 +84,27 @@ class DeplacementTest {
     @Test
     fun orientationDePersonnage() {
         deplacement.position = Position(2, 2)
-        deplacement.orientation = Direction.NORD
+        deplacement.direction = Direction.NORD
         deplacement.commandeDeplacement("D")
         val orientationAttendu = Direction.EST
-        assertEquals(orientationAttendu, deplacement.orientation)
+        assertEquals(orientationAttendu, deplacement.direction)
     }
 
     @Test
     fun enchainementOrientation() {
         deplacement.position = Position(2, 2)
-        deplacement.orientation = Direction.NORD
+        deplacement.direction = Direction.NORD
         deplacement.commandeDeplacement("D")
         deplacement.commandeDeplacement("G")
         val orientationAttendu = Direction.NORD
-        assertEquals(orientationAttendu, deplacement.orientation)
+        assertEquals(orientationAttendu, deplacement.direction)
 
     }
 
     @Test
     fun deplacementParOrientation() {
         deplacement.position = Position(2, 2)
-        deplacement.orientation = Direction.EST
+        deplacement.direction = Direction.EST
         grille.ajouterContenuCase(Position(3, 2), Vide)
         deplacement.commandeDeplacement("A")
         val positionAttendu = Position(3, 2)
@@ -109,7 +114,7 @@ class DeplacementTest {
     @Test
     fun enchainementOrientationEtDeplacement() {
         deplacement.position = Position(0, 0)
-        deplacement.orientation = Direction.SUD
+        deplacement.direction = Direction.SUD
         grille.ajouterContenuCase(Position(0, 1), Vide)
         grille.ajouterContenuCase(Position(1, 1), Vide)
         grille.ajouterContenuCase(Position(1, 2), Vide)

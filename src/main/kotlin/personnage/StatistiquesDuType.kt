@@ -1,6 +1,9 @@
 package personnage
 
-interface StatistiquesDuType {
+import kotlinx.serialization.Serializable
+
+@Serializable
+sealed interface StatistiquesDuType {
     fun ajouterStatistiques()
     fun afficherStatistiques(): String
 }

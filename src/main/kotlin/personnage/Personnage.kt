@@ -1,5 +1,8 @@
 package personnage
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 class Personnage {
     val nom: NomDuPersonnage = NomDuPersonnage()
     val type: TypeDuPersonnage = TypeDuPersonnage()

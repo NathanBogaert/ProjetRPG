@@ -1,8 +1,16 @@
 package jeu
 
-class Deplacement(var grilleActuelle: Grille, private val gestionTransitionGrille: GestionTransitionGrille) {
-    var position = Position(0, 0)
-    var orientation = Direction.NORD
+import personnage.Personnage
+import sauvegarde.DonneesSauvegarde
+import sauvegarde.SauvegardeDuJeu
+
+class Deplacement(
+    var grilleActuelle: Grille,
+    private val gestionTransitionGrille: GestionTransitionGrille,
+    private val sauvegardeDuJeu: SauvegardeDuJeu,
+) {
+    var position = Position(1, 1)
+    var direction = Direction.NORD
 
     fun commandeDeplacement(commande: String) {
         when (commande) {
@@ -13,6 +21,7 @@ class Deplacement(var grilleActuelle: Grille, private val gestionTransitionGrill
             "A" -> avancer()
             "G" -> tournerGauche()
             "D" -> tournerDroite()
+            "SAVE" -> sauvegarderJeu()
             else -> println("Commande inconnue.")
         }
     }
@@ -28,7 +37,7 @@ class Deplacement(var grilleActuelle: Grille, private val gestionTransitionGrill
         }
 
         when (grilleActuelle.obtenirContenu(nouvellePosition)) {
-            Vide -> {
+            Vide, null -> {
                 changerPosition(nouvellePosition)
             }
             Mur -> {
@@ -50,31 +59,41 @@ class Deplacement(var grilleActuelle: Grille, private val gestionTransitionGrill
     }
 
     private fun avancer() {
-        deplacement(orientation)
+        deplacement(direction)
     }
 
     private fun tournerGauche() {
-        orientation = when (orientation) {
+        direction = when (direction) {
             Direction.NORD -> Direction.OUEST
             Direction.OUEST -> Direction.SUD
             Direction.SUD -> Direction.EST
             Direction.EST -> Direction.NORD
         }
-        println("Vous faites maintenant face à $orientation")
+        println("Vous faites maintenant face à $direction")
     }
 
     private fun tournerDroite() {
-        orientation = when (orientation) {
+        direction = when (direction) {
             Direction.NORD -> Direction.EST
             Direction.OUEST -> Direction.NORD
             Direction.SUD -> Direction.OUEST
             Direction.EST -> Direction.SUD
         }
-        println("Vous faites maintenant face à $orientation")
+        println("Vous faites maintenant face à $direction")
     }
 
     fun mettreAJourGrilleEtPosition(nouvelleGrille: Grille, nouvellePosition: Position) {
         grilleActuelle = nouvelleGrille
         position = nouvellePosition
+    }
+
+    private fun sauvegarderJeu() {
+        val donneesSauvegarde = DonneesSauvegarde(
+            position,
+            direction,
+            gestionTransitionGrille.carte.grilles.entries.first { it.value == grilleActuelle }.key,
+            gestionTransitionGrille.carte
+        )
+        sauvegardeDuJeu.sauvegarderLeJeu(donneesSauvegarde)
     }
 }

@@ -1,5 +1,8 @@
 package personnage
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 class TypeDuPersonnage {
     lateinit var typeString: String
     private lateinit var type: StatistiquesDuType

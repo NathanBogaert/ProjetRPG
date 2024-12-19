@@ -1,5 +1,8 @@
 package jeu
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Position(var x: Int, var y: Int) {
     fun mouvement(direction: Direction) {
         when (direction) {

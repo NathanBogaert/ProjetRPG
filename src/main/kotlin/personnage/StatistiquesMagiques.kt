@@ -1,5 +1,8 @@
 package personnage
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class StatistiquesMagiques (
     private var pointsDeMana: Int,
     private var intelligence: Int,

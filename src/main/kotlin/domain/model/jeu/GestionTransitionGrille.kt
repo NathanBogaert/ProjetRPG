@@ -1,4 +1,4 @@
-package jeu
+package domain.model.jeu
 
 class GestionTransitionGrille(val carte: Carte) {
     fun changerGrille(direction: Direction, deplacement: Deplacement): Boolean {
@@ -22,7 +22,10 @@ class GestionTransitionGrille(val carte: Carte) {
     private fun calculerNouvellePositionGrille(direction: Direction, grille: Grille, deplacement: Deplacement) = when (direction) {
         Direction.NORD -> Position(deplacement.position.x, grille.hauteur - 1)
         Direction.SUD -> Position(deplacement.position.x, 0)
-        Direction.OUEST -> Position(deplacement.grilleActuelle.largeur - 1, deplacement.position.y)
+        Direction.OUEST -> Position(
+            deplacement.grilleActuelle.largeur - 1,
+            deplacement.position.y
+        )
         Direction.EST -> Position(0, deplacement.position.y)
     }
 }

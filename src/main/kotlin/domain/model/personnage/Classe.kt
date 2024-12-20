@@ -1,8 +1,8 @@
-package personnage
+package domain.model.personnage
 
 import kotlinx.serialization.Serializable
 
 @Serializable
-sealed interface Type {
+sealed interface Classe {
     val statistiques: Statistiques
 }

@@ -1,9 +1,9 @@
-package personnage
+package domain.model.personnage
 
 import kotlinx.serialization.Serializable
 
 @Serializable
-class Guerrier: Type {
+class Guerrier: Classe {
     override val statistiques = Statistiques(
         statistiquesPhysiques = StatistiquesPhysiques(
             pointsDeVie = 150,

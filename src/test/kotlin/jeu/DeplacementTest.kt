@@ -1,11 +1,12 @@
 package jeu
 
+import domain.model.jeu.*
+import domain.model.personnage.Personnage
+import domain.port.serverside.SauvegardeDuJeu
+import infrastructure.SauvegardeFichier
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import personnage.Personnage
-import sauvegarde.Sauvegarde
-import sauvegarde.SauvegardeDuJeu
 
 class DeplacementTest {
     private lateinit var carte: Carte
@@ -15,6 +16,8 @@ class DeplacementTest {
     private lateinit var sauvegardeJeu: SauvegardeDuJeu
     private lateinit var personnage: Personnage
 
+    // Ajouter des fonctions pour gérer les redondances dans les tests
+
     @BeforeEach
     fun setUp() {
         carte = Carte()
@@ -22,18 +25,22 @@ class DeplacementTest {
         grille = Grille()
         grille.creerGrille()
         gestionTransitionGrille = GestionTransitionGrille(carte)
-        sauvegardeJeu = Sauvegarde()
+        sauvegardeJeu = SauvegardeFichier()
         personnage = Personnage()
         deplacement = Deplacement(grille, gestionTransitionGrille, sauvegardeJeu, personnage)
     }
 
     @Test
-    fun deplacementVersCaseVide() {
+    fun `Lorsque je déplace mon personnage sur une case vide, le joueur est déplacé`() {
+        //Given
         deplacement.position = Position(0, 0)
         grille.ajouterContenuCase(Position(1, 0), Vide)
         deplacement.commandeDeplacement("E")
         val positionAttendu = Position(1, 0)
-        assertEquals(positionAttendu, deplacement.position)
+        //When
+        val resultat = deplacement.position
+        //Then
+        assertEquals(positionAttendu, resultat)
     }
 
     @Test
@@ -42,7 +49,8 @@ class DeplacementTest {
         grille.ajouterContenuCase(Position(1, 0), Monstre)
         deplacement.commandeDeplacement("E")
         val positionAttendu = Position(0, 0)
-        assertEquals(positionAttendu, deplacement.position)
+        val resultat = deplacement.position
+        assertEquals(positionAttendu, resultat)
     }
 
     @Test
@@ -50,7 +58,8 @@ class DeplacementTest {
         deplacement.position = Position(0, 0)
         deplacement.commandeDeplacement("N")
         val positionAttendu = Position(0, 0)
-        assertEquals(positionAttendu, deplacement.position)
+        val resultat = deplacement.position
+        assertEquals(positionAttendu, resultat)
     }
 
     @Test
@@ -63,7 +72,8 @@ class DeplacementTest {
         deplacement.commandeDeplacement("S")
         deplacement.commandeDeplacement("E")
         val positionAttendu = Position(2, 1)
-        assertEquals(positionAttendu, deplacement.position)
+        val resultat = deplacement.position
+        assertEquals(positionAttendu, resultat)
     }
 
     @Test
@@ -72,7 +82,8 @@ class DeplacementTest {
         grille.ajouterContenuCase(Position(1, 0), Tresor)
         deplacement.commandeDeplacement("E")
         val positionAttendu = Position(1, 0)
-        assertEquals(positionAttendu, deplacement.position)
+        val resultat = deplacement.position
+        assertEquals(positionAttendu, resultat)
     }
 
     @Test
@@ -80,43 +91,48 @@ class DeplacementTest {
         deplacement.position = Position(0, 4)
         deplacement.commandeDeplacement("S")
         val positionAttendu = Position(0, 4)
-        assertEquals(positionAttendu, deplacement.position)
+        val resultat = deplacement.position
+        assertEquals(positionAttendu, resultat)
     }
 
     @Test
     fun orientationDePersonnage() {
         deplacement.position = Position(2, 2)
-        deplacement.direction = Direction.NORD
+        deplacement.direction = domain.model.jeu.Direction.NORD
         deplacement.commandeDeplacement("D")
-        val orientationAttendu = Direction.EST
-        assertEquals(orientationAttendu, deplacement.direction)
+        val orientationAttendu = domain.model.jeu.Direction.EST
+        val resultat = deplacement.direction
+        assertEquals(orientationAttendu, resultat)
     }
+
 
     @Test
     fun enchainementOrientation() {
         deplacement.position = Position(2, 2)
-        deplacement.direction = Direction.NORD
+        deplacement.direction = domain.model.jeu.Direction.NORD
         deplacement.commandeDeplacement("D")
         deplacement.commandeDeplacement("G")
-        val orientationAttendu = Direction.NORD
-        assertEquals(orientationAttendu, deplacement.direction)
+        val orientationAttendu = domain.model.jeu.Direction.NORD
+        val resultat = deplacement.direction
+        assertEquals(orientationAttendu, resultat)
 
     }
 
     @Test
     fun deplacementParOrientation() {
         deplacement.position = Position(2, 2)
-        deplacement.direction = Direction.EST
+        deplacement.direction = domain.model.jeu.Direction.EST
         grille.ajouterContenuCase(Position(3, 2), Vide)
         deplacement.commandeDeplacement("A")
         val positionAttendu = Position(3, 2)
-        assertEquals(positionAttendu, deplacement.position)
+        val resultat = deplacement.position
+        assertEquals(positionAttendu, resultat)
     }
 
     @Test
     fun enchainementOrientationEtDeplacement() {
         deplacement.position = Position(0, 0)
-        deplacement.direction = Direction.SUD
+        deplacement.direction = domain.model.jeu.Direction.SUD
         grille.ajouterContenuCase(Position(0, 1), Vide)
         grille.ajouterContenuCase(Position(1, 1), Vide)
         grille.ajouterContenuCase(Position(1, 2), Vide)
@@ -128,6 +144,7 @@ class DeplacementTest {
         deplacement.commandeDeplacement("A")
         deplacement.commandeDeplacement("A")
         val positionAttendu = Position(1, 3)
-        assertEquals(positionAttendu, deplacement.position)
+        val resultat = deplacement.position
+        assertEquals(positionAttendu, resultat)
     }
 }

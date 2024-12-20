@@ -1,8 +1,8 @@
-package jeu
+package domain.model.jeu
 
-import personnage.Personnage
-import sauvegarde.DonneesDeSauvegarde
-import sauvegarde.SauvegardeDuJeu
+import domain.model.personnage.Personnage
+import domain.model.sauvegarde.DonneesDeSauvegarde
+import domain.port.serverside.SauvegardeDuJeu
 
 class Deplacement(
     var grilleActuelle: Grille,
@@ -83,6 +83,7 @@ class Deplacement(
         println("Vous faites maintenant face à $direction")
     }
 
+    // A partir d'ici il faut tout sortie de déplacement (créer un service)
     fun mettreAJourGrilleEtPosition(nouvelleGrille: Grille, nouvellePosition: Position) {
         grilleActuelle = nouvelleGrille
         position = nouvellePosition
@@ -94,8 +95,8 @@ class Deplacement(
             direction,
             gestionTransitionGrille.carte.grilles.entries.first { it.value == grilleActuelle }.key,
             gestionTransitionGrille.carte,
-            personnage.nom,
-            personnage.type
+            personnage.nomDuPersonnage,
+            personnage.typeDuPersonnage
         )
         sauvegardeDuJeu.sauvegarderLeJeu(donneesDeSauvegarde)
     }

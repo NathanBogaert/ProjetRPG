@@ -1,14 +1,15 @@
-package personnage
+package domain.model.personnage
 
 class Personnage {
-    var nom: NomDuPersonnage = NomDuPersonnage()
-    var type: TypeDuPersonnage = TypeDuPersonnage()
+    var nomDuPersonnage: NomDuPersonnage = NomDuPersonnage()
+    var typeDuPersonnage: TypeDuPersonnage = TypeDuPersonnage()
 
+    // Mettre dans une classe IHM (faire une interface pour gérer chaque "type" de print, pour le personnage, les stats, etc)
     fun afficherRecapitulatif(): String {
-        val statistiquesPhysiques = type.type.statistiques.statistiquesPhysiques
-        val statistiquesMagiques = type.type.statistiques.statistiquesMagiques
+        val statistiquesPhysiques = typeDuPersonnage.classe.statistiques.statistiquesPhysiques
+        val statistiquesMagiques = typeDuPersonnage.classe.statistiques.statistiquesMagiques
         return """
-            Nom: ${nom.nom}
+            Nom: ${nomDuPersonnage.nom}
             Statistiques physiques:
             Pts de vie: ${statistiquesPhysiques.pointsDeVie}
             Force: ${statistiquesPhysiques.force}

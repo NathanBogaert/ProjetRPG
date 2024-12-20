@@ -1,16 +1,19 @@
-import jeu.Carte
-import jeu.Deplacement
-import jeu.GestionTransitionGrille
-import jeu.Position
-import personnage.Personnage
-import sauvegarde.Sauvegarde
+import domain.model.jeu.Carte
+import domain.model.jeu.Deplacement
+import domain.model.jeu.GestionTransitionGrille
+import domain.model.jeu.Position
+import domain.model.personnage.Personnage
+import infrastructure.SauvegardeFichier
 import java.util.*
 
 // https://github.com/remihamy1/ProjetRPG/tree/main
 
+// Gérer les print dans une class IHM
+// Mettre dans des fonctions tous ce qui est possible dans ce main
+
 fun main() {
     var choixMenu: String
-    val sauvegardeJeu = Sauvegarde()
+    val sauvegardeJeu = SauvegardeFichier()
     val personnage = Personnage()
     var carte = Carte()
 
@@ -24,12 +27,12 @@ fun main() {
         choixMenu = readln()
 
         when {
-            choixMenu == "1" -> {
+            nouvellePartie(choixMenu) -> {
                 var nomDuPersonnage: String
                 do {
                     println("Entrez le nom de votre personnage :")
                     nomDuPersonnage = readln()
-                } while (!personnage.nom.nomValide(nomDuPersonnage))
+                } while (!personnage.nomDuPersonnage.estValide(nomDuPersonnage))
 
                 var typeDuPersonnage: String
                 do {
@@ -40,10 +43,10 @@ fun main() {
                         3. Voleur
                     """.trimIndent())
                     typeDuPersonnage = readln()
-                } while (!personnage.type.typeValide(typeDuPersonnage))
+                } while (!personnage.typeDuPersonnage.estValide(typeDuPersonnage))
 
                 var afficherInfo: String
-                while (true) {
+                do {
                     println("Voulez-vous afficher le récapitulatif du personnage (O/N) ?")
                     afficherInfo = readln()
                     when (afficherInfo.uppercase(Locale.getDefault())) {
@@ -54,10 +57,11 @@ fun main() {
                         "N" -> break
                         else -> println("Choix invalide, veuillez entrez O ou N")
                     }
-                }
+                } while (afficherInfo != "O" && afficherInfo != "N")
 
                 carte.creerCarte()
-                val deplacementUtilisateur = carte.obtenirGrille(Position(0, 0))?.let { Deplacement(it, GestionTransitionGrille(carte), sauvegardeJeu, personnage) }
+                val deplacementUtilisateur = carte.obtenirGrille(Position(0, 0))?.let { Deplacement(it,
+                    GestionTransitionGrille(carte), sauvegardeJeu, personnage) }
 
                 if (deplacementUtilisateur != null) {
                     println("Vous êtes en position ${deplacementUtilisateur.position.x}, ${deplacementUtilisateur.position.y}.")
@@ -70,20 +74,21 @@ fun main() {
                     }
                 }
             }
-
             choixMenu == "2" && sauvegardeJeu.verifierPresenceFichier() -> {
                 val donneesSauvegardeJeu = sauvegardeJeu.chargerLeJeu()
-                personnage.nom = donneesSauvegardeJeu.nomDuPersonnage
-                personnage.type = donneesSauvegardeJeu.typeDuPersonnage
-                personnage.type.type
+                personnage.nomDuPersonnage = donneesSauvegardeJeu.nomDuPersonnage
+                personnage.typeDuPersonnage = donneesSauvegardeJeu.typeDuPersonnage
+                personnage.typeDuPersonnage.classe
                 carte = donneesSauvegardeJeu.carte
-                val deplacementUtilisateur = carte.obtenirGrille(donneesSauvegardeJeu.positionGrilleActuelle)?.let { Deplacement(it, GestionTransitionGrille(carte), sauvegardeJeu, personnage) }
+                val deplacementUtilisateur = carte.obtenirGrille(donneesSauvegardeJeu.positionGrilleActuelle)?.let { Deplacement(it,
+                    GestionTransitionGrille(carte), sauvegardeJeu, personnage) }
 
                 if (deplacementUtilisateur != null) {
                     deplacementUtilisateur.position = donneesSauvegardeJeu.position
                     deplacementUtilisateur.direction = donneesSauvegardeJeu.direction
                     println(personnage.afficherRecapitulatif())
-                    println("Vous êtes en position ${deplacementUtilisateur.position.x}, ${deplacementUtilisateur.position.y} sur la grille en position ${deplacementUtilisateur.gestionTransitionGrille.carte.grilles.entries.first { it.value == deplacementUtilisateur.grilleActuelle }.key.x}, ${deplacementUtilisateur.gestionTransitionGrille.carte.grilles.entries.first { it.value == deplacementUtilisateur.grilleActuelle }.key.y}.")
+                    val positionCarte = deplacementUtilisateur.gestionTransitionGrille.carte.grilles.entries.first { it.value == deplacementUtilisateur.grilleActuelle }.key
+                    println("""Vous êtes en position ${deplacementUtilisateur.position.x}, ${deplacementUtilisateur.position.y} sur la grille en position ${positionCarte.x}, ${positionCarte.y}.""")
 
                     while (true) {
                         println("Entrez un deplacement (N,S,E,O,A,G,D) ou SAVE pour sauvegarder ou Q pour quitter :")
@@ -93,12 +98,12 @@ fun main() {
                     }
                 }
             }
-
             choixMenu == "3" -> break
-
             choixMenu != "2" -> {
                 println("Commande inconnue, taper 1 pour débuter une nouvelle partie ou 2 pour charger la derniere sauvegarde")
             }
         }
     }
 }
+
+private fun nouvellePartie(choixMenu: String) = choixMenu == "1"

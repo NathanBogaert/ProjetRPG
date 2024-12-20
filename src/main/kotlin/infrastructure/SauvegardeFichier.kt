@@ -1,17 +1,18 @@
-package sauvegarde
+package infrastructure
 
+import domain.model.sauvegarde.DonneesDeSauvegarde
+import domain.port.serverside.SauvegardeDuJeu
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.io.File
 
-class Sauvegarde: SauvegardeDuJeu {
+class SauvegardeFichier: SauvegardeDuJeu {
     private val fichierSauvegardeJeu = File("sauvegardeJeu.json")
 
     override fun sauvegarderLeJeu(donneesDeSauvegarde: DonneesDeSauvegarde) {
         val json = Json { allowStructuredMapKeys = true }
         val donneesSerializer = json.encodeToString(donneesDeSauvegarde)
         fichierSauvegardeJeu.writeText(donneesSerializer)
-
         println("Sauvegarde effectuée.")
     }
 

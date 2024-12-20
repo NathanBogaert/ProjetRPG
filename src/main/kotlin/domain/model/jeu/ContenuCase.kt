@@ -1,4 +1,4 @@
-package jeu
+package domain.model.jeu
 
 import kotlinx.serialization.Serializable
 

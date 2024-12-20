@@ -1,5 +1,7 @@
 package personnage
 
+import domain.model.personnage.Guerrier
+import domain.model.personnage.Personnage
 import org.junit.jupiter.api.Test
 
 class PersonnageTest {
@@ -7,8 +9,8 @@ class PersonnageTest {
 
     @Test
     fun affichageInfoDuPersonnage() {
-        personnage.nom.nom = "Nathan"
-        personnage.type.type = Guerrier()
+        personnage.nomDuPersonnage.nom = "Nathan"
+        personnage.typeDuPersonnage.classe = Guerrier()
         val expected = """
             Nom: Nathan
             Statistiques physiques:

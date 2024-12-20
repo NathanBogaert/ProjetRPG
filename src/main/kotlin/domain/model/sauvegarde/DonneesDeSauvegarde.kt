@@ -1,11 +1,11 @@
-package sauvegarde
+package domain.model.sauvegarde
 
-import jeu.Carte
-import jeu.Direction
-import jeu.Position
+import domain.model.jeu.Carte
+import domain.model.jeu.Direction
+import domain.model.jeu.Position
+import domain.model.personnage.NomDuPersonnage
+import domain.model.personnage.TypeDuPersonnage
 import kotlinx.serialization.Serializable
-import personnage.NomDuPersonnage
-import personnage.TypeDuPersonnage
 
 @Serializable
 data class DonneesDeSauvegarde(

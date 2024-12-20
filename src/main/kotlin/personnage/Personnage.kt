@@ -1,11 +1,8 @@
 package personnage
 
-import kotlinx.serialization.Serializable
-
-@Serializable
 class Personnage {
-    val nom: NomDuPersonnage = NomDuPersonnage()
-    val type: TypeDuPersonnage = TypeDuPersonnage()
+    var nom: NomDuPersonnage = NomDuPersonnage()
+    var type: TypeDuPersonnage = TypeDuPersonnage()
 
     fun afficherInfo() {
         return println("""Nom: ${nom.afficherNom()}

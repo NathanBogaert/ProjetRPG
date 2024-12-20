@@ -1,7 +1,7 @@
 package sauvegarde
 
 interface SauvegardeDuJeu {
-    fun sauvegarderLeJeu(donneesSauvegarde: DonneesSauvegarde)
-    fun chargerLeJeu(): DonneesSauvegarde
+    fun sauvegarderLeJeu(donneesDeSauvegarde: DonneesDeSauvegarde)
+    fun chargerLeJeu(): DonneesDeSauvegarde
     fun verifierPresenceFichier(): Boolean
 }

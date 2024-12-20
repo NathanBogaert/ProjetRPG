@@ -1,13 +1,14 @@
 package jeu
 
 import personnage.Personnage
-import sauvegarde.DonneesSauvegarde
+import sauvegarde.DonneesDeSauvegarde
 import sauvegarde.SauvegardeDuJeu
 
 class Deplacement(
     var grilleActuelle: Grille,
-    private val gestionTransitionGrille: GestionTransitionGrille,
+    val gestionTransitionGrille: GestionTransitionGrille,
     private val sauvegardeDuJeu: SauvegardeDuJeu,
+    private val personnage: Personnage
 ) {
     var position = Position(1, 1)
     var direction = Direction.NORD
@@ -88,12 +89,14 @@ class Deplacement(
     }
 
     private fun sauvegarderJeu() {
-        val donneesSauvegarde = DonneesSauvegarde(
+        val donneesDeSauvegarde = DonneesDeSauvegarde(
             position,
             direction,
             gestionTransitionGrille.carte.grilles.entries.first { it.value == grilleActuelle }.key,
-            gestionTransitionGrille.carte
+            gestionTransitionGrille.carte,
+            personnage.nom,
+            personnage.type
         )
-        sauvegardeDuJeu.sauvegarderLeJeu(donneesSauvegarde)
+        sauvegardeDuJeu.sauvegarderLeJeu(donneesDeSauvegarde)
     }
 }

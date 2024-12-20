@@ -1,9 +1,11 @@
 package personnage
 
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 
 @Serializable
 class Voleur: StatistiquesDuType {
+    @Transient
     private lateinit var statistiques: Statistiques
 
     override fun ajouterStatistiques() {

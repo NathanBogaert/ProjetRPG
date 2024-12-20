@@ -13,6 +13,7 @@ class DeplacementTest {
     private lateinit var gestionTransitionGrille: GestionTransitionGrille
     private lateinit var deplacement: Deplacement
     private lateinit var sauvegardeJeu: SauvegardeDuJeu
+    private lateinit var personnage: Personnage
 
     @BeforeEach
     fun setUp() {
@@ -22,7 +23,8 @@ class DeplacementTest {
         grille.creerGrille()
         gestionTransitionGrille = GestionTransitionGrille(carte)
         sauvegardeJeu = Sauvegarde()
-        deplacement = Deplacement(grille, gestionTransitionGrille, sauvegardeJeu, )
+        personnage = Personnage()
+        deplacement = Deplacement(grille, gestionTransitionGrille, sauvegardeJeu, personnage)
     }
 
     @Test

@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 class TypeDuPersonnage {
     lateinit var typeString: String
-    private lateinit var type: StatistiquesDuType
+    lateinit var type: StatistiquesDuType
     private val typesDisponibles = mapOf(
         "1" to Guerrier(),
         "2" to Mage(),

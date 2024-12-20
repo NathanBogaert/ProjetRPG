@@ -4,38 +4,23 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 class TypeDuPersonnage {
-    lateinit var typeString: String
-    lateinit var type: StatistiquesDuType
+    lateinit var type: Type
     private val typesDisponibles = mapOf(
         "1" to Guerrier(),
         "2" to Mage(),
         "3" to Voleur()
     )
 
-    fun choixDuType() {
-        do {
-            println(
-                """Choisissez le type de votre personnage (1, 2, 3) :
-                    1. Guerrier
-                    2. Mage
-                    3. Voleur
-                """.trimIndent()
-            )
-            typeString = readln()
-        } while (!verifierType())
-        type = typesDisponibles[typeString]!!
-        type.ajouterStatistiques()
+    private fun ajouterType(type: Type) {
+        this.type = type
     }
 
-    fun verifierType(): Boolean {
-        if (typesDisponibles.containsKey(typeString)) {
+    fun typeValide(type: String): Boolean {
+        if (typesDisponibles.containsKey(type)) {
+            typesDisponibles[type]?.let { ajouterType(it) }
             return true
         }
-        println("Écrivez 1, 2 ou 3 pour choisir le type de votre personnage.")
+        println("Entrez 1, 2 ou 3 pour choisir le type de votre personnage.")
         return false
-    }
-
-    fun afficherStatistiques(): String {
-        return type.afficherStatistiques()
     }
 }

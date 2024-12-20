@@ -7,15 +7,17 @@ class TypeDuPersonnageTest {
 
     @Test
     fun typeValide() {
-        typeDuPersonnage.typeString = "1"
+        val type = "1"
         val expected = true
-        assert(expected == typeDuPersonnage.verifierType())
+        val resultat = typeDuPersonnage.typeValide(type)
+        assert(expected == resultat)
     }
 
     @Test
     fun typeNonValide() {
-        typeDuPersonnage.typeString = "0"
+        val type = "0"
         val expected = false
-        assert(expected == typeDuPersonnage.verifierType())
+        val resultat = typeDuPersonnage.typeValide(type)
+        assert(expected == resultat)
     }
 }

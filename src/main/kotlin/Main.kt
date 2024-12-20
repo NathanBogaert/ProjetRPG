@@ -25,9 +25,37 @@ fun main() {
 
         when {
             choixMenu == "1" -> {
-                personnage.nom.ajouterNom()
-                personnage.type.choixDuType()
-                personnage.afficherInfo()
+                var nomDuPersonnage: String
+                do {
+                    println("Entrez le nom de votre personnage :")
+                    nomDuPersonnage = readln()
+                } while (!personnage.nom.nomValide(nomDuPersonnage))
+
+                var typeDuPersonnage: String
+                do {
+                    println("""
+                        Choisissez le type de votre personnage :
+                        1. Guerrier
+                        2. Mage
+                        3. Voleur
+                    """.trimIndent())
+                    typeDuPersonnage = readln()
+                } while (!personnage.type.typeValide(typeDuPersonnage))
+
+                var afficherInfo: String
+                while (true) {
+                    println("Voulez-vous afficher le récapitulatif du personnage (O/N) ?")
+                    afficherInfo = readln()
+                    when (afficherInfo.uppercase(Locale.getDefault())) {
+                        "O" -> {
+                            println(personnage.afficherRecapitulatif())
+                            break
+                        }
+                        "N" -> break
+                        else -> println("Choix invalide, veuillez entrez O ou N")
+                    }
+                }
+
                 carte.creerCarte()
                 val deplacementUtilisateur = carte.obtenirGrille(Position(0, 0))?.let { Deplacement(it, GestionTransitionGrille(carte), sauvegardeJeu, personnage) }
 
@@ -47,14 +75,14 @@ fun main() {
                 val donneesSauvegardeJeu = sauvegardeJeu.chargerLeJeu()
                 personnage.nom = donneesSauvegardeJeu.nomDuPersonnage
                 personnage.type = donneesSauvegardeJeu.typeDuPersonnage
-                personnage.type.type.ajouterStatistiques()
+                personnage.type.type
                 carte = donneesSauvegardeJeu.carte
                 val deplacementUtilisateur = carte.obtenirGrille(donneesSauvegardeJeu.positionGrilleActuelle)?.let { Deplacement(it, GestionTransitionGrille(carte), sauvegardeJeu, personnage) }
 
                 if (deplacementUtilisateur != null) {
                     deplacementUtilisateur.position = donneesSauvegardeJeu.position
                     deplacementUtilisateur.direction = donneesSauvegardeJeu.direction
-                    println("${personnage.afficherInfo()}")
+                    println(personnage.afficherRecapitulatif())
                     println("Vous êtes en position ${deplacementUtilisateur.position.x}, ${deplacementUtilisateur.position.y} sur la grille en position ${deplacementUtilisateur.gestionTransitionGrille.carte.grilles.entries.first { it.value == deplacementUtilisateur.grilleActuelle }.key.x}, ${deplacementUtilisateur.gestionTransitionGrille.carte.grilles.entries.first { it.value == deplacementUtilisateur.grilleActuelle }.key.y}.")
 
                     while (true) {

@@ -4,24 +4,18 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 class NomDuPersonnage {
-    var nom: String = ""
+    lateinit var nom: String
 
-    fun ajouterNom() {
-        do {
-            println("Entrez le nom de votre personnage :")
-            nom = readln()
-        } while (!verifierNom())
+    private fun ajouterNom(nom: String) {
+        this.nom = nom
     }
 
-    fun verifierNom(): Boolean {
+    fun nomValide(nom: String): Boolean {
         if (nom.length in 6..12) {
+            ajouterNom(nom)
             return true
         }
         println("Le nom de votre personnage doit être compris entre 6 et 12 caractères.")
         return false
-    }
-
-    fun afficherNom(): String {
-        return nom
     }
 }

@@ -7,22 +7,25 @@ class NomDuPersonnageTest {
 
     @Test
     fun nomValide() {
-        nomDuPersonnage.nom = "nathan"
+        val nom = "nathan"
         val expected = true
-        assert(expected == nomDuPersonnage.verifierNom())
+        val resultat = nomDuPersonnage.nomValide(nom)
+        assert(expected == resultat)
     }
 
     @Test
     fun nomTropCourt() {
-        nomDuPersonnage.nom = ""
+        val nom = ""
         val expected = false
-        assert(expected == nomDuPersonnage.verifierNom())
+        val resultat = nomDuPersonnage.nomValide(nom)
+        assert(expected == resultat)
     }
 
     @Test
     fun nomTropLong() {
-        nomDuPersonnage.nom = "aaaaaaaaaaaaa"
+        val nom = "aaaaaaaaaaaaa"
         val expected = false
-        assert(expected == nomDuPersonnage.verifierNom())
+        val resultat = nomDuPersonnage.nomValide(nom)
+        assert(expected == resultat)
     }
 }

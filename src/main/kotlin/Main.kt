@@ -20,7 +20,7 @@ fun main() {
     while (true) {
         println("""
             1. Nouvelle partie
-            2. Charge partie
+            2. Charger partie
             3. Quitter
         """.trimIndent())
 
@@ -28,36 +28,11 @@ fun main() {
 
         when {
             nouvellePartie(choixMenu) -> {
-                var nomDuPersonnage: String
-                do {
-                    println("Entrez le nom de votre personnage :")
-                    nomDuPersonnage = readln()
-                } while (!personnage.nomDuPersonnage.estValide(nomDuPersonnage))
+                creationDuNomDuPersonnage(personnage)
 
-                var typeDuPersonnage: String
-                do {
-                    println("""
-                        Choisissez le type de votre personnage :
-                        1. Guerrier
-                        2. Mage
-                        3. Voleur
-                    """.trimIndent())
-                    typeDuPersonnage = readln()
-                } while (!personnage.typeDuPersonnage.estValide(typeDuPersonnage))
+                creationDuTypeDuPersonnage(personnage)
 
-                var afficherInfo: String
-                do {
-                    println("Voulez-vous afficher le récapitulatif du personnage (O/N) ?")
-                    afficherInfo = readln()
-                    when (afficherInfo.uppercase(Locale.getDefault())) {
-                        "O" -> {
-                            println(personnage.afficherRecapitulatif())
-                            break
-                        }
-                        "N" -> break
-                        else -> println("Choix invalide, veuillez entrez O ou N")
-                    }
-                } while (afficherInfo != "O" && afficherInfo != "N")
+                choixAfficherRecapitulatif(personnage)
 
                 carte.creerCarte()
                 val deplacementUtilisateur = carte.obtenirGrille(Position(0, 0))?.let { Deplacement(it,
@@ -65,16 +40,10 @@ fun main() {
 
                 if (deplacementUtilisateur != null) {
                     println("Vous êtes en position ${deplacementUtilisateur.position.x}, ${deplacementUtilisateur.position.y}.")
-
-                    while (true) {
-                        println("Entrez un deplacement (N,S,E,O,A,G,D) ou SAVE pour sauvegarder ou Q pour quitter :")
-                        val choixDeplacement = readln()
-                        if (choixDeplacement.uppercase(Locale.getDefault()) == "Q") break
-                        deplacementUtilisateur.commandeDeplacement(choixDeplacement.uppercase(Locale.getDefault()))
-                    }
+                    jeu(deplacementUtilisateur)
                 }
             }
-            choixMenu == "2" && sauvegardeJeu.verifierPresenceFichier() -> {
+            chargerPartie(choixMenu, sauvegardeJeu) -> {
                 val donneesSauvegardeJeu = sauvegardeJeu.chargerLeJeu()
                 personnage.nomDuPersonnage = donneesSauvegardeJeu.nomDuPersonnage
                 personnage.typeDuPersonnage = donneesSauvegardeJeu.typeDuPersonnage
@@ -82,28 +51,78 @@ fun main() {
                 carte = donneesSauvegardeJeu.carte
                 val deplacementUtilisateur = carte.obtenirGrille(donneesSauvegardeJeu.positionGrilleActuelle)?.let { Deplacement(it,
                     GestionTransitionGrille(carte), sauvegardeJeu, personnage) }
-
+                
                 if (deplacementUtilisateur != null) {
                     deplacementUtilisateur.position = donneesSauvegardeJeu.position
                     deplacementUtilisateur.direction = donneesSauvegardeJeu.direction
-                    println(personnage.afficherRecapitulatif())
+                    choixAfficherRecapitulatif(personnage)
                     val positionCarte = deplacementUtilisateur.gestionTransitionGrille.carte.grilles.entries.first { it.value == deplacementUtilisateur.grilleActuelle }.key
                     println("""Vous êtes en position ${deplacementUtilisateur.position.x}, ${deplacementUtilisateur.position.y} sur la grille en position ${positionCarte.x}, ${positionCarte.y}.""")
-
-                    while (true) {
-                        println("Entrez un deplacement (N,S,E,O,A,G,D) ou SAVE pour sauvegarder ou Q pour quitter :")
-                        val choixDeplacement = readln()
-                        if (choixDeplacement.uppercase(Locale.getDefault()) == "Q") break
-                        deplacementUtilisateur.commandeDeplacement(choixDeplacement.uppercase(Locale.getDefault()))
-                    }
+                    jeu(deplacementUtilisateur)
                 }
             }
-            choixMenu == "3" -> break
-            choixMenu != "2" -> {
+            quitterLeJeu(choixMenu) -> break
+            autresCommandes(choixMenu) -> {
                 println("Commande inconnue, taper 1 pour débuter une nouvelle partie ou 2 pour charger la derniere sauvegarde")
             }
         }
     }
 }
+
+private fun jeu(deplacementUtilisateur: Deplacement) {
+    while (true) {
+        println("Entrez un deplacement (N,S,E,O,A,G,D) ou SAVE pour sauvegarder ou Q pour quitter :")
+        val choixDeplacement = readln()
+        if (choixDeplacement.uppercase(Locale.getDefault()) == "Q") break
+        deplacementUtilisateur.commandeDeplacement(choixDeplacement.uppercase(Locale.getDefault()))
+    }
+}
+
+private fun autresCommandes(choixMenu: String) = choixMenu != "2"
+
+private fun quitterLeJeu(choixMenu: String) = choixMenu == "3"
+
+private fun choixAfficherRecapitulatif(personnage: Personnage) {
+    var doitAfficherRecapitulatif: String
+    do {
+        println("Voulez-vous afficher le récapitulatif du personnage (O/N) ?")
+        doitAfficherRecapitulatif = readln()
+        when (doitAfficherRecapitulatif.uppercase(Locale.getDefault())) {
+            "O" -> {
+                println(personnage.afficherRecapitulatif())
+                break
+            }
+
+            "N" -> break
+            else -> println("Choix invalide, veuillez entrez O ou N")
+        }
+    } while (doitAfficherRecapitulatif != "O" && doitAfficherRecapitulatif != "N")
+}
+
+private fun creationDuTypeDuPersonnage(personnage: Personnage) {
+    var typeDuPersonnage: String
+    do {
+        println(
+            """
+                Choisissez le type de votre personnage :
+                1. Guerrier
+                2. Mage
+                3. Voleur
+            """.trimIndent()
+        )
+        typeDuPersonnage = readln()
+    } while (!personnage.typeDuPersonnage.estValide(typeDuPersonnage))
+}
+
+private fun creationDuNomDuPersonnage(personnage: Personnage) {
+    var nomDuPersonnage: String
+    do {
+        println("Entrez le nom de votre personnage :")
+        nomDuPersonnage = readln()
+    } while (!personnage.nomDuPersonnage.estValide(nomDuPersonnage))
+}
+
+private fun chargerPartie(choixMenu: String, sauvegardeJeu: SauvegardeFichier) =
+    choixMenu == "2" && sauvegardeJeu.verifierPresenceFichier()
 
 private fun nouvellePartie(choixMenu: String) = choixMenu == "1"

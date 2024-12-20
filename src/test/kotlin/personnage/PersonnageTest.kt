@@ -8,10 +8,11 @@ class PersonnageTest {
     private val personnage = Personnage()
 
     @Test
-    fun affichageInfoDuPersonnage() {
+    fun `Lorsque le joueur affiche le récapitulatif du personnage, le récapitulatif affiche les bonnes informations`() {
+        // Given
         personnage.nomDuPersonnage.nom = "Nathan"
         personnage.typeDuPersonnage.classe = Guerrier()
-        val expected = """
+        val recapitulatifAttendu = """
             Nom: Nathan
             Statistiques physiques:
             Pts de vie: 150
@@ -26,7 +27,9 @@ class PersonnageTest {
             Chance: 5
             Esprit: 4
         """.trimIndent()
-        val resultat = personnage.afficherRecapitulatif()
-        assert(expected == resultat)
+        // When
+        val recapitulatif = personnage.afficherRecapitulatif()
+        // Then
+        assert(recapitulatifAttendu == recapitulatif)
     }
 }

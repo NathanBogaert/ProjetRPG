@@ -31,39 +31,46 @@ class DeplacementTest {
     }
 
     @Test
-    fun `Lorsque je déplace mon personnage sur une case vide, le joueur est déplacé`() {
-        //Given
+    fun `Lorsque je déplace mon personnage sur une case vide, le personnage est déplacé`() {
+        // Given
         deplacement.position = Position(0, 0)
         grille.ajouterContenuCase(Position(1, 0), Vide)
         deplacement.commandeDeplacement("E")
         val positionAttendu = Position(1, 0)
-        //When
-        val resultat = deplacement.position
-        //Then
-        assertEquals(positionAttendu, resultat)
+        // When
+        val positionDuPersonnage = deplacement.position
+        // Then
+        assertEquals(positionAttendu, positionDuPersonnage)
     }
 
     @Test
-    fun deplacementVersCaseMonstre() {
+    fun `Lorsque je déplace mon personnage sur une case contenant un monstre, le personnage n'est pas déplacé`() {
+        // Given
         deplacement.position = Position(0, 0)
         grille.ajouterContenuCase(Position(1, 0), Monstre)
         deplacement.commandeDeplacement("E")
         val positionAttendu = Position(0, 0)
-        val resultat = deplacement.position
-        assertEquals(positionAttendu, resultat)
+        // When
+        val positionDuPersonnage = deplacement.position
+        // Then
+        assertEquals(positionAttendu, positionDuPersonnage)
     }
 
     @Test
-    fun deplacementHorsGrille() {
+    fun `Lorsque je déplace mon personnage hors de la grille, le personnage n'est pas déplacé`() {
+        // Given
         deplacement.position = Position(0, 0)
         deplacement.commandeDeplacement("N")
         val positionAttendu = Position(0, 0)
-        val resultat = deplacement.position
-        assertEquals(positionAttendu, resultat)
+        // When
+        val positionDuPersonnage = deplacement.position
+        // Then
+        assertEquals(positionAttendu, positionDuPersonnage)
     }
 
     @Test
-    fun enchainementDeDeplacement() {
+    fun `Lorsque j'enchaine des déplacements avec mon personnage, le personnage est déplacé à chaques positions`() {
+        // Given
         deplacement.position = Position(0, 0)
         grille.ajouterContenuCase(Position(1, 0), Vide)
         grille.ajouterContenuCase(Position(1, 1), Vide)
@@ -72,67 +79,86 @@ class DeplacementTest {
         deplacement.commandeDeplacement("S")
         deplacement.commandeDeplacement("E")
         val positionAttendu = Position(2, 1)
-        val resultat = deplacement.position
-        assertEquals(positionAttendu, resultat)
+        // When
+        val positionDuPersonnage = deplacement.position
+        // Then
+        assertEquals(positionAttendu, positionDuPersonnage)
     }
 
     @Test
-    fun deplacementVersCaseTresor() {
+    fun `Lorsque mon personnage se déplace vers une case contenant un trésor, le personnage est déplacé`() {
+        // Given
         deplacement.position = Position(0, 0)
         grille.ajouterContenuCase(Position(1, 0), Tresor)
         deplacement.commandeDeplacement("E")
         val positionAttendu = Position(1, 0)
-        val resultat = deplacement.position
-        assertEquals(positionAttendu, resultat)
+        // When
+        val positionDuPersonnage = deplacement.position
+        // Then
+        assertEquals(positionAttendu, positionDuPersonnage)
     }
 
     @Test
-    fun deplacementHorsGrilleMax() {
+    fun `Lorsque mon personnage se déplace au delà de la taille max de la grille, le personnage n'est pas déplacé`() {
+        // Given
         deplacement.position = Position(0, 4)
         deplacement.commandeDeplacement("S")
         val positionAttendu = Position(0, 4)
-        val resultat = deplacement.position
-        assertEquals(positionAttendu, resultat)
+        // When
+        val positionDuPersonnage = deplacement.position
+        // Then
+        assertEquals(positionAttendu, positionDuPersonnage)
     }
 
     @Test
-    fun orientationDePersonnage() {
+    fun `Lorsque le personnage à une orientation vers le Nord et se tourne vers la droite, le personnage à une orientation vers l'Est`() {
+        // Given
         deplacement.position = Position(2, 2)
-        deplacement.direction = domain.model.jeu.Direction.NORD
+        deplacement.direction = Direction.NORD
         deplacement.commandeDeplacement("D")
-        val orientationAttendu = domain.model.jeu.Direction.EST
-        val resultat = deplacement.direction
-        assertEquals(orientationAttendu, resultat)
+        val orientationAttendu = Direction.EST
+        // When
+        val directionDuPersonnage = deplacement.direction
+        // Then
+        assertEquals(orientationAttendu, directionDuPersonnage)
     }
 
 
     @Test
-    fun enchainementOrientation() {
+    fun `Lorsque le personnage enchaine les orientations, le personnage change son orientation à chaque changements d'orientation`() {
+        // Given
         deplacement.position = Position(2, 2)
-        deplacement.direction = domain.model.jeu.Direction.NORD
+        deplacement.direction = Direction.NORD
         deplacement.commandeDeplacement("D")
         deplacement.commandeDeplacement("G")
-        val orientationAttendu = domain.model.jeu.Direction.NORD
-        val resultat = deplacement.direction
-        assertEquals(orientationAttendu, resultat)
+        val orientationAttendu = Direction.NORD
+        // When
+        val directionDuPersonnage = deplacement.direction
+        // Then
+        assertEquals(orientationAttendu, directionDuPersonnage)
 
     }
 
     @Test
-    fun deplacementParOrientation() {
+    fun `Lorsque le personnage se déplace par rapport à son orientation, le personnage se déplace`() {
+        // Given
         deplacement.position = Position(2, 2)
-        deplacement.direction = domain.model.jeu.Direction.EST
+        deplacement.direction = Direction.EST
         grille.ajouterContenuCase(Position(3, 2), Vide)
         deplacement.commandeDeplacement("A")
         val positionAttendu = Position(3, 2)
-        val resultat = deplacement.position
-        assertEquals(positionAttendu, resultat)
+        // When
+        val positionDuPersonnage = deplacement.position
+        // Then
+        assertEquals(positionAttendu, positionDuPersonnage)
     }
 
+    // Faire uniquement ce test au lieu de faire un test pour l'orientation / déplacement
     @Test
-    fun enchainementOrientationEtDeplacement() {
+    fun `Lorsque le personnage enchaine les déplacement et orientation, le personnage se déplace et change son orientation`() {
+        // Given
         deplacement.position = Position(0, 0)
-        deplacement.direction = domain.model.jeu.Direction.SUD
+        deplacement.direction = Direction.SUD
         grille.ajouterContenuCase(Position(0, 1), Vide)
         grille.ajouterContenuCase(Position(1, 1), Vide)
         grille.ajouterContenuCase(Position(1, 2), Vide)
@@ -144,7 +170,9 @@ class DeplacementTest {
         deplacement.commandeDeplacement("A")
         deplacement.commandeDeplacement("A")
         val positionAttendu = Position(1, 3)
-        val resultat = deplacement.position
-        assertEquals(positionAttendu, resultat)
+        // When
+        val positionDuPersonnage = deplacement.position
+        // Then
+        assertEquals(positionAttendu, positionDuPersonnage)
     }
 }

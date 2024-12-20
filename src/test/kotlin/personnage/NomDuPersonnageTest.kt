@@ -7,26 +7,35 @@ class NomDuPersonnageTest {
     private val nomDuPersonnage = NomDuPersonnage()
 
     @Test
-    fun estValide() {
+    fun `Lorsque le joueur entre un nom valide, le nom est validé`() {
+        // Given
         val nom = "nathan"
-        val expected = true
-        val resultat = nomDuPersonnage.estValide(nom)
-        assert(expected == resultat)
+        val validationAttendu = true
+        // When
+        val nomDuPersonnageValide = nomDuPersonnage.estValide(nom)
+        // Then
+        assert(validationAttendu == nomDuPersonnageValide)
     }
 
     @Test
-    fun nomTropCourt() {
+    fun `Lorsque le joueur entre un nom trop court, le nom n'est pas validé`() {
+        // Given
         val nom = ""
-        val expected = false
-        val resultat = nomDuPersonnage.estValide(nom)
-        assert(expected == resultat)
+        val validationAttendu = false
+        // When
+        val nomDuPersonnageValide = nomDuPersonnage.estValide(nom)
+        // Then
+        assert(validationAttendu == nomDuPersonnageValide)
     }
 
     @Test
-    fun nomTropLong() {
+    fun `Lorsque le joueur entre un nom trop long, le nom n'est pas validé`() {
+        // Given
         val nom = "aaaaaaaaaaaaa"
-        val expected = false
-        val resultat = nomDuPersonnage.estValide(nom)
-        assert(expected == resultat)
+        val validationAttendu = false
+        // When
+        val nomDuPersonnageValide = nomDuPersonnage.estValide(nom)
+        // Then
+        assert(validationAttendu == nomDuPersonnageValide)
     }
 }

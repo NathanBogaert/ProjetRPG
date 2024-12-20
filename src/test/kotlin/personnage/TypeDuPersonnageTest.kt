@@ -7,18 +7,24 @@ class TypeDuPersonnageTest {
     private var typeDuPersonnage = TypeDuPersonnage()
 
     @Test
-    fun estValide() {
+    fun `Lorsque le joueur entre un type valide, le type est validé`() {
+        // Given
         val type = "1"
-        val expected = true
-        val resultat = typeDuPersonnage.estValide(type)
-        assert(expected == resultat)
+        val validationAttendu = true
+        // When
+        val typeDuPersonnageValide = typeDuPersonnage.estValide(type)
+        // Then
+        assert(validationAttendu == typeDuPersonnageValide)
     }
 
     @Test
-    fun typeNonValide() {
+    fun `Lorsque le joueur entre un type non valide, le type n'est pas validé`() {
+        // Given
         val type = "0"
-        val expected = false
-        val resultat = typeDuPersonnage.estValide(type)
-        assert(expected == resultat)
+        val validationAttendu = false
+        // When
+        val typeDuPersonnageValide = typeDuPersonnage.estValide(type)
+        // Then
+        assert(validationAttendu == typeDuPersonnageValide)
     }
 }

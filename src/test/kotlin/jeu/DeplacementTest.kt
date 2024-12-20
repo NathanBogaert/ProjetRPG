@@ -30,13 +30,18 @@ class DeplacementTest {
         deplacement = Deplacement(grille, gestionTransitionGrille, sauvegardeJeu, personnage)
     }
 
+    private fun deplacementVersCase(contenuCase: ContenuCase, positionAttendu: Position): Position {
+        deplacement.position = Position(0, 0)
+        grille.ajouterContenuCase(Position(1, 0), contenuCase)
+        deplacement.commandeDeplacement("E")
+        val positionAttendu = positionAttendu
+        return positionAttendu
+    }
+
     @Test
     fun `Lorsque je déplace mon personnage sur une case vide, le personnage est déplacé`() {
         // Given
-        deplacement.position = Position(0, 0)
-        grille.ajouterContenuCase(Position(1, 0), Vide)
-        deplacement.commandeDeplacement("E")
-        val positionAttendu = Position(1, 0)
+        val positionAttendu = deplacementVersCase(Vide, Position(1, 0))
         // When
         val positionDuPersonnage = deplacement.position
         // Then
@@ -46,10 +51,7 @@ class DeplacementTest {
     @Test
     fun `Lorsque je déplace mon personnage sur une case contenant un monstre, le personnage n'est pas déplacé`() {
         // Given
-        deplacement.position = Position(0, 0)
-        grille.ajouterContenuCase(Position(1, 0), Monstre)
-        deplacement.commandeDeplacement("E")
-        val positionAttendu = Position(0, 0)
+        val positionAttendu = deplacementVersCase(Monstre, Position(0, 0))
         // When
         val positionDuPersonnage = deplacement.position
         // Then
@@ -88,10 +90,7 @@ class DeplacementTest {
     @Test
     fun `Lorsque mon personnage se déplace vers une case contenant un trésor, le personnage est déplacé`() {
         // Given
-        deplacement.position = Position(0, 0)
-        grille.ajouterContenuCase(Position(1, 0), Tresor)
-        deplacement.commandeDeplacement("E")
-        val positionAttendu = Position(1, 0)
+        val positionAttendu = deplacementVersCase(Tresor, Position(1, 0))
         // When
         val positionDuPersonnage = deplacement.position
         // Then

@@ -7,14 +7,16 @@ class NomDuPersonnageTest {
     private val nomDuPersonnage = NomDuPersonnage()
 
     @Test
-    fun `Lorsque le joueur entre un nom valide, le nom est validé`() {
+    fun `Lorsque le joueur entre un nom valide, le nom est créer`() {
         // Given
-        val nom = "nathan"
         val validationAttendu = true
+        val nomAttendu = "nathan"
         // When
-        val nomDuPersonnageValide = nomDuPersonnage.estValide(nom)
+        val nomDuPersonnageValide = nomDuPersonnage.estValide(nomAttendu)
+        val nomDuPersonnage = nomDuPersonnage.nom
         // Then
         assert(validationAttendu == nomDuPersonnageValide)
+        assert(nomAttendu == nomDuPersonnage)
     }
 
     @Test

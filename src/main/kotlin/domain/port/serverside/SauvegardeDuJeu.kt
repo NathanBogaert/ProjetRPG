@@ -5,5 +5,5 @@ import domain.model.sauvegarde.DonneesDeSauvegarde
 interface SauvegardeDuJeu {
     fun sauvegarderLeJeu(donneesDeSauvegarde: DonneesDeSauvegarde)
     fun chargerLeJeu(): DonneesDeSauvegarde
-    fun verifierPresenceFichier(): Boolean
+    fun verifierPresenceSauvegarde(): Boolean
 }

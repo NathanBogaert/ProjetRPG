@@ -21,7 +21,7 @@ class SauvegardeFichier: SauvegardeDuJeu {
         return json.decodeFromString<DonneesDeSauvegarde>(fichierSauvegardeJeu.readText())
     }
 
-    override fun verifierPresenceFichier(): Boolean {
+    override fun verifierPresenceSauvegarde(): Boolean {
         if (fichierSauvegardeJeu.exists()) {
             return true
         }

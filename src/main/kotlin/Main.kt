@@ -3,6 +3,8 @@ import domain.model.jeu.Deplacement
 import domain.model.jeu.GestionTransitionGrille
 import domain.model.jeu.Position
 import domain.model.personnage.Personnage
+import domain.service.DeplacementService
+import domain.service.SauvegardeService
 import infrastructure.SauvegardeFichier
 import java.util.*
 
@@ -35,11 +37,17 @@ fun main() {
                 choixAfficherRecapitulatif(personnage)
 
                 carte.creerCarte()
-                val deplacementUtilisateur = carte.obtenirGrille(Position(0, 0))?.let { Deplacement(it,
-                    GestionTransitionGrille(carte), sauvegardeJeu, personnage) }
+                val sauvegardeService = SauvegardeService(sauvegardeJeu, personnage, carte)
+                val deplacementService = carte.obtenirGrille(Position(0, 0))?.let {
+                    DeplacementService(
+                        GestionTransitionGrille(carte), it,
+                        sauvegardeService
+                    )
+                }
+                val deplacementUtilisateur = deplacementService?.let { Deplacement(it) }
 
                 if (deplacementUtilisateur != null) {
-                    println("Vous êtes en position ${deplacementUtilisateur.position.x}, ${deplacementUtilisateur.position.y}.")
+                    println("Vous êtes en position ${deplacementService.position.x}, ${deplacementService.position.y}.")
                     jeu(deplacementUtilisateur)
                 }
             }
@@ -49,15 +57,20 @@ fun main() {
                 personnage.typeDuPersonnage = donneesSauvegardeJeu.typeDuPersonnage
                 personnage.typeDuPersonnage.classe
                 carte = donneesSauvegardeJeu.carte
-                val deplacementUtilisateur = carte.obtenirGrille(donneesSauvegardeJeu.positionGrilleActuelle)?.let { Deplacement(it,
-                    GestionTransitionGrille(carte), sauvegardeJeu, personnage) }
+                val sauvegardeService = SauvegardeService(sauvegardeJeu, personnage, carte)
+                val deplacementService = carte.obtenirGrille(donneesSauvegardeJeu.positionGrilleActuelle)?.let {
+                    DeplacementService(
+                        GestionTransitionGrille(carte), it,
+                        sauvegardeService
+                    )
+                }
+                val deplacementUtilisateur = deplacementService?.let { Deplacement(it) }
                 
                 if (deplacementUtilisateur != null) {
-                    deplacementUtilisateur.position = donneesSauvegardeJeu.position
+                    deplacementService.position = donneesSauvegardeJeu.position
                     deplacementUtilisateur.direction = donneesSauvegardeJeu.direction
                     choixAfficherRecapitulatif(personnage)
-                    val positionCarte = deplacementUtilisateur.gestionTransitionGrille.carte.grilles.entries.first { it.value == deplacementUtilisateur.grilleActuelle }.key
-                    println("""Vous êtes en position ${deplacementUtilisateur.position.x}, ${deplacementUtilisateur.position.y} sur la grille en position ${positionCarte.x}, ${positionCarte.y}.""")
+                    println("Vous êtes en position ${deplacementService.position.x}, ${deplacementService.position.y}.")
                     jeu(deplacementUtilisateur)
                 }
             }
@@ -71,7 +84,7 @@ fun main() {
 
 private fun jeu(deplacementUtilisateur: Deplacement) {
     while (true) {
-        println("Entrez un deplacement (N,S,E,O,A,G,D) ou SAVE pour sauvegarder ou Q pour quitter :")
+        println("Entrez un deplacement (N,S,E,O,A,G,D) ou Q pour quitter :")
         val choixDeplacement = readln()
         if (choixDeplacement.uppercase(Locale.getDefault()) == "Q") break
         deplacementUtilisateur.commandeDeplacement(choixDeplacement.uppercase(Locale.getDefault()))
@@ -123,6 +136,6 @@ private fun creationDuNomDuPersonnage(personnage: Personnage) {
 }
 
 private fun chargerPartie(choixMenu: String, sauvegardeJeu: SauvegardeFichier) =
-    choixMenu == "2" && sauvegardeJeu.verifierPresenceFichier()
+    choixMenu == "2" && sauvegardeJeu.verifierPresenceSauvegarde()
 
 private fun nouvellePartie(choixMenu: String) = choixMenu == "1"

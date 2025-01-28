@@ -1,23 +1,24 @@
 package domain.model.personnage
 
+import domain.model.personnage.statistiques.*
 import kotlinx.serialization.Serializable
 
 @Serializable
 class Mage: Classe {
     override val statistiques = Statistiques(
         statistiquesPhysiques = StatistiquesPhysiques(
-            pointsDeVie = 90,
-            force = 4,
-            defense = 5,
-            agilite = 7,
-            endurance = 5
+            pointsDeVie = PointsDeVie(90),
+            force = Force(4),
+            defense = Defense(5),
+            agilite = Agilite(7),
+            endurance = Endurance(5)
         ),
         statistiquesMagiques = StatistiquesMagiques(
-            pointsDeMana = 150,
-            intelligence = 15,
-            resistanceMagiques = 12,
-            chance = 6,
-            esprit = 10
+            pointsDeMana = PointsDeMana(150),
+            intelligence = Intelligence(15),
+            resistanceMagique = ResistanceMagique(12),
+            chance = Chance(6),
+            esprit = Esprit(10)
         )
     )
 }

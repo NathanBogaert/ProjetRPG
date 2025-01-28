@@ -1,23 +1,24 @@
 package domain.model.personnage
 
+import domain.model.personnage.statistiques.*
 import kotlinx.serialization.Serializable
 
 @Serializable
 class Guerrier: Classe {
     override val statistiques = Statistiques(
         statistiquesPhysiques = StatistiquesPhysiques(
-            pointsDeVie = 150,
-            force = 15,
-            defense = 12,
-            agilite = 8,
-            endurance = 10
+            pointsDeVie = PointsDeVie(150),
+            force = Force(15),
+            defense = Defense(12),
+            agilite = Agilite(8),
+            endurance = Endurance(10)
         ),
         statistiquesMagiques = StatistiquesMagiques(
-            pointsDeMana = 50,
-            intelligence = 5,
-            resistanceMagiques = 6,
-            chance = 5,
-            esprit = 4
+            pointsDeMana = PointsDeMana(50),
+            intelligence = Intelligence(5),
+            resistanceMagique = ResistanceMagique(6),
+            chance = Chance(5),
+            esprit = Esprit(4)
         )
     )
 }

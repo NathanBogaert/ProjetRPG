@@ -51,17 +51,17 @@ class IHMDuPersonnage(
         return """
             Nom: ${personnage.nomDuPersonnage.nom}
             Statistiques physiques:
-            Pts de vie: ${statistiquesPhysiques.pointsDeVie}
-            Force: ${statistiquesPhysiques.force}
-            Defense: ${statistiquesPhysiques.defense}
-            Agilité: ${statistiquesPhysiques.agilite}
-            Endurance: ${statistiquesPhysiques.endurance}
+            Pts de vie: ${statistiquesPhysiques.pointsDeVie.afficherPointsDeVie()}
+            Force: ${statistiquesPhysiques.force.afficherForce()}
+            Defense: ${statistiquesPhysiques.defense.afficherDefense()}
+            Agilité: ${statistiquesPhysiques.agilite.afficherAgilite()}
+            Endurance: ${statistiquesPhysiques.endurance.afficherEndurance()}
             Statistiques magiques:
-            Pts de mana: ${statistiquesMagiques.pointsDeMana}
-            Intelligence: ${statistiquesMagiques.intelligence}
-            Résistance magiques: ${statistiquesMagiques.resistanceMagiques}
-            Chance: ${statistiquesMagiques.chance}
-            Esprit: ${statistiquesMagiques.esprit}
+            Pts de mana: ${statistiquesMagiques.pointsDeMana.afficherPointsDeMana()}
+            Intelligence: ${statistiquesMagiques.intelligence.afficherIntelligence()}
+            Résistance magiques: ${statistiquesMagiques.resistanceMagique.afficherResistanceMagique()}
+            Chance: ${statistiquesMagiques.chance.afficherChance()}
+            Esprit: ${statistiquesMagiques.esprit.afficherEsprit()}
             """.trimIndent()
     }
 }

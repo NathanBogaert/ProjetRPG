@@ -1,12 +1,13 @@
 package domain.model.personnage
 
+import domain.model.personnage.statistiques.*
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class StatistiquesPhysiques (
-    val pointsDeVie: Int , // Créer un type pour chaque stats
-    val force: Int,
-    val defense: Int,
-    val agilite: Int,
-    val endurance: Int
+    val pointsDeVie: PointsDeVie,
+    val force: Force,
+    val defense: Defense,
+    val agilite: Agilite,
+    val endurance: Endurance
 )

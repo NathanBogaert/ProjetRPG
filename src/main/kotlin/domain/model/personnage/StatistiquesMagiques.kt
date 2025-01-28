@@ -1,12 +1,13 @@
 package domain.model.personnage
 
+import domain.model.personnage.statistiques.*
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class StatistiquesMagiques (
-    val pointsDeMana: Int, // Créer un type pour chaque stats
-    val intelligence: Int,
-    val resistanceMagiques: Int,
-    val chance: Int,
-    val esprit: Int
+    val pointsDeMana: PointsDeMana,
+    val intelligence: Intelligence,
+    val resistanceMagique: ResistanceMagique,
+    val chance: Chance,
+    val esprit: Esprit
 )

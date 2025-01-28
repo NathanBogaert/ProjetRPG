@@ -1,11 +1,14 @@
-package personnage
+package application
 
 import domain.model.personnage.Guerrier
 import domain.model.personnage.Personnage
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
-class PersonnageTest {
+class IHMDuPersonnageTest {
     private val personnage = Personnage()
+    private val affichageSimple = AffichageSimple()
+    private val ihmDuPersonnage = IHMDuPersonnage(affichageSimple)
 
     @Test
     fun `Lorsque le joueur affiche le récapitulatif du personnage, le récapitulatif affiche les bonnes informations`() {
@@ -28,8 +31,9 @@ class PersonnageTest {
             Esprit: 4
         """.trimIndent()
         // When
-        val recapitulatif = personnage.afficherRecapitulatif()
+        val recapitulatif = ihmDuPersonnage.recapitulatif(personnage)
         // Then
-        assert(recapitulatifAttendu == recapitulatif)
+        println(recapitulatif)
+        assert(recapitulatifAttendu == recapitulatif.toString())
     }
 }

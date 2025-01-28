@@ -36,29 +36,32 @@ class IHMDuPersonnage(
             doitAfficherRecapitulatif = readln()
             when (doitAfficherRecapitulatif.uppercase(Locale.getDefault())) {
                 "O" -> {
-                    val statistiquesPhysiques = personnage.typeDuPersonnage.classe.statistiques.statistiquesPhysiques
-                    val statistiquesMagiques = personnage.typeDuPersonnage.classe.statistiques.statistiquesMagiques
-                    val recapitulatif = """
-                    Nom: ${personnage.nomDuPersonnage.nom}
-                    Statistiques physiques:
-                    Pts de vie: ${statistiquesPhysiques.pointsDeVie}
-                    Force: ${statistiquesPhysiques.force}
-                    Defense: ${statistiquesPhysiques.defense}
-                    Agilité: ${statistiquesPhysiques.agilite}
-                    Endurance: ${statistiquesPhysiques.endurance}
-                    Statistiques magiques:
-                    Pts de mana: ${statistiquesMagiques.pointsDeMana}
-                    Intelligence: ${statistiquesMagiques.intelligence}
-                    Résistance magiques: ${statistiquesMagiques.resistanceMagiques}
-                    Chance: ${statistiquesMagiques.chance}
-                    Esprit: ${statistiquesMagiques.esprit}
-                    """.trimIndent()
-                    ihm.afficher(recapitulatif)
+                    ihm.afficher(recapitulatif(personnage))
                     break
                 }
                 "N" -> break
                 else -> ihm.afficher("Choix invalide, veuillez entrez O ou N")
             }
         } while (doitAfficherRecapitulatif != "O" && doitAfficherRecapitulatif != "N")
+    }
+
+    fun recapitulatif(personnage: Personnage): String {
+        val statistiquesPhysiques = personnage.typeDuPersonnage.classe.statistiques.statistiquesPhysiques
+        val statistiquesMagiques = personnage.typeDuPersonnage.classe.statistiques.statistiquesMagiques
+        return """
+            Nom: ${personnage.nomDuPersonnage.nom}
+            Statistiques physiques:
+            Pts de vie: ${statistiquesPhysiques.pointsDeVie}
+            Force: ${statistiquesPhysiques.force}
+            Defense: ${statistiquesPhysiques.defense}
+            Agilité: ${statistiquesPhysiques.agilite}
+            Endurance: ${statistiquesPhysiques.endurance}
+            Statistiques magiques:
+            Pts de mana: ${statistiquesMagiques.pointsDeMana}
+            Intelligence: ${statistiquesMagiques.intelligence}
+            Résistance magiques: ${statistiquesMagiques.resistanceMagiques}
+            Chance: ${statistiquesMagiques.chance}
+            Esprit: ${statistiquesMagiques.esprit}
+            """.trimIndent()
     }
 }

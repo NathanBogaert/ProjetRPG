@@ -4,8 +4,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 class Carte {
-    private val largeur = 10
-    private val hauteur = 10
+    var largeur = 10
+    var hauteur = 10
     val grilles: MutableMap<Position, Grille> = mutableMapOf()
 
     fun creerCarte() {

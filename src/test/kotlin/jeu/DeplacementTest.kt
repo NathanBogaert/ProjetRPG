@@ -1,8 +1,11 @@
 package jeu
 
 import domain.model.jeu.*
+import domain.model.personnage.Guerrier
 import domain.model.personnage.Personnage
 import domain.port.serverside.SauvegardeDuJeu
+import domain.service.DeplacementService
+import domain.service.SauvegardeService
 import infrastructure.SauvegardeFichier
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
@@ -15,26 +18,30 @@ class DeplacementTest {
     private lateinit var deplacement: Deplacement
     private lateinit var sauvegardeJeu: SauvegardeDuJeu
     private lateinit var personnage: Personnage
-
-    // Ajouter des fonctions pour gérer les redondances dans les tests
+    private lateinit var deplacementService: DeplacementService
+    private lateinit var sauvegardeService: SauvegardeService
 
     @BeforeEach
     fun setUp() {
         carte = Carte()
+        carte.largeur = 1
+        carte.hauteur = 1
         carte.creerCarte()
-        grille = Grille()
-        grille.creerGrille()
+        grille = carte.obtenirGrille(Position(0,0))!!
         gestionTransitionGrille = GestionTransitionGrille(carte)
-        sauvegardeJeu = SauvegardeFichier()
         personnage = Personnage()
-        deplacement = Deplacement(grille, gestionTransitionGrille, sauvegardeJeu, personnage)
+        personnage.nomDuPersonnage.nom = "nomtest"
+        personnage.typeDuPersonnage.classe = Guerrier()
+        sauvegardeJeu = SauvegardeFichier()
+        sauvegardeService = SauvegardeService(sauvegardeJeu, personnage, carte)
+        deplacementService = DeplacementService(gestionTransitionGrille, grille, sauvegardeService)
+        deplacement = Deplacement(deplacementService)
     }
 
     private fun deplacementVersCase(contenuCase: ContenuCase, positionAttendu: Position): Position {
-        deplacement.position = Position(0, 0)
+        deplacementService.position = Position(0, 0)
         grille.ajouterContenuCase(Position(1, 0), contenuCase)
         deplacement.commandeDeplacement("E")
-        val positionAttendu = positionAttendu
         return positionAttendu
     }
 
@@ -43,7 +50,7 @@ class DeplacementTest {
         // Given
         val positionAttendu = deplacementVersCase(Vide, Position(1, 0))
         // When
-        val positionDuPersonnage = deplacement.position
+        val positionDuPersonnage = deplacementService.position
         // Then
         assertEquals(positionAttendu, positionDuPersonnage)
     }
@@ -53,7 +60,7 @@ class DeplacementTest {
         // Given
         val positionAttendu = deplacementVersCase(Monstre, Position(0, 0))
         // When
-        val positionDuPersonnage = deplacement.position
+        val positionDuPersonnage = deplacementService.position
         // Then
         assertEquals(positionAttendu, positionDuPersonnage)
     }
@@ -61,11 +68,11 @@ class DeplacementTest {
     @Test
     fun `Lorsque je déplace mon personnage hors de la grille, le personnage n'est pas déplacé`() {
         // Given
-        deplacement.position = Position(0, 0)
+        deplacementService.position = Position(0, 0)
         deplacement.commandeDeplacement("N")
         val positionAttendu = Position(0, 0)
         // When
-        val positionDuPersonnage = deplacement.position
+        val positionDuPersonnage = deplacementService.position
         // Then
         assertEquals(positionAttendu, positionDuPersonnage)
     }
@@ -73,7 +80,7 @@ class DeplacementTest {
     @Test
     fun `Lorsque j'enchaine des déplacements avec mon personnage, le personnage est déplacé à chaques positions`() {
         // Given
-        deplacement.position = Position(0, 0)
+        deplacementService.position = Position(0, 0)
         grille.ajouterContenuCase(Position(1, 0), Vide)
         grille.ajouterContenuCase(Position(1, 1), Vide)
         grille.ajouterContenuCase(Position(2, 1), Vide)
@@ -82,7 +89,7 @@ class DeplacementTest {
         deplacement.commandeDeplacement("E")
         val positionAttendu = Position(2, 1)
         // When
-        val positionDuPersonnage = deplacement.position
+        val positionDuPersonnage = deplacementService.position
         // Then
         assertEquals(positionAttendu, positionDuPersonnage)
     }
@@ -92,7 +99,7 @@ class DeplacementTest {
         // Given
         val positionAttendu = deplacementVersCase(Tresor, Position(1, 0))
         // When
-        val positionDuPersonnage = deplacement.position
+        val positionDuPersonnage = deplacementService.position
         // Then
         assertEquals(positionAttendu, positionDuPersonnage)
     }
@@ -100,11 +107,11 @@ class DeplacementTest {
     @Test
     fun `Lorsque mon personnage se déplace au delà de la taille max de la grille, le personnage n'est pas déplacé`() {
         // Given
-        deplacement.position = Position(0, 4)
+        deplacementService.position = Position(0, 4)
         deplacement.commandeDeplacement("S")
         val positionAttendu = Position(0, 4)
         // When
-        val positionDuPersonnage = deplacement.position
+        val positionDuPersonnage = deplacementService.position
         // Then
         assertEquals(positionAttendu, positionDuPersonnage)
     }
@@ -112,7 +119,7 @@ class DeplacementTest {
     @Test
     fun `Lorsque le personnage à une orientation vers le Nord et se tourne vers la droite, le personnage à une orientation vers l'Est`() {
         // Given
-        deplacement.position = Position(2, 2)
+        deplacementService.position = Position(2, 2)
         deplacement.direction = Direction.NORD
         deplacement.commandeDeplacement("D")
         val orientationAttendu = Direction.EST
@@ -126,7 +133,7 @@ class DeplacementTest {
     @Test
     fun `Lorsque le personnage enchaine les orientations, le personnage change son orientation à chaque changements d'orientation`() {
         // Given
-        deplacement.position = Position(2, 2)
+        deplacementService.position = Position(2, 2)
         deplacement.direction = Direction.NORD
         deplacement.commandeDeplacement("D")
         deplacement.commandeDeplacement("G")
@@ -141,13 +148,13 @@ class DeplacementTest {
     @Test
     fun `Lorsque le personnage se déplace par rapport à son orientation, le personnage se déplace`() {
         // Given
-        deplacement.position = Position(2, 2)
+        deplacementService.position = Position(2, 2)
         deplacement.direction = Direction.EST
         grille.ajouterContenuCase(Position(3, 2), Vide)
         deplacement.commandeDeplacement("A")
         val positionAttendu = Position(3, 2)
         // When
-        val positionDuPersonnage = deplacement.position
+        val positionDuPersonnage = deplacementService.position
         // Then
         assertEquals(positionAttendu, positionDuPersonnage)
     }
@@ -156,7 +163,7 @@ class DeplacementTest {
     @Test
     fun `Lorsque le personnage enchaine les déplacement et orientation, le personnage se déplace et change son orientation`() {
         // Given
-        deplacement.position = Position(0, 0)
+        deplacementService.position = Position(0, 0)
         deplacement.direction = Direction.SUD
         grille.ajouterContenuCase(Position(0, 1), Vide)
         grille.ajouterContenuCase(Position(1, 1), Vide)
@@ -170,7 +177,7 @@ class DeplacementTest {
         deplacement.commandeDeplacement("A")
         val positionAttendu = Position(1, 3)
         // When
-        val positionDuPersonnage = deplacement.position
+        val positionDuPersonnage = deplacementService.position
         // Then
         assertEquals(positionAttendu, positionDuPersonnage)
     }

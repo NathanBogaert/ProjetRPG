@@ -1,11 +1,13 @@
 package domain.service
 
+import application.IHMDuJeu
 import domain.model.jeu.*
 
 class DeplacementService(
     private val gestionTransitionGrille: GestionTransitionGrille,
     private var grilleActuelle: Grille,
-    private var sauvegardeService: SauvegardeService
+    private var sauvegardeService: SauvegardeService,
+    private var ihm: IHMDuJeu
 ): GestionDeplacement {
     var position = Position(1, 1)
 
@@ -16,17 +18,17 @@ class DeplacementService(
             if (transitionGrille != null) {
                 changerGrille(transitionGrille)
             } else {
-                println("Vous avez atteint le bord du monde. Vous ne pouvez aller plus au ${direction.name.lowercase()}.")
+                ihm.afficherAtteinteBordDuMonde(direction)
             }
             return
         }
 
         when (grilleActuelle.obtenirContenu(nouvellePosition)) {
             Vide, null -> changerPosition(nouvellePosition)
-            Mur -> println("Un obstacle vous bloque le passage. Vous ne pouvez pas aller par là.")
-            Monstre -> println("Un monstre bloque votre chemin ! Vous devez le vaincre pour avancer.")
+            Mur -> ihm.afficherObstacleBloque()
+            Monstre -> ihm.afficherMonstreBloque()
             Tresor -> {
-                println("Vous avez trouvé un trésor !")
+                ihm.afficherTresorTrouve()
                 changerPosition(nouvellePosition)
             }
         }
@@ -36,7 +38,7 @@ class DeplacementService(
 
     private fun changerPosition(nouvellePosition: Position) {
         position = nouvellePosition
-        println("Vous êtes maintenant en position ${nouvellePosition.x}, ${nouvellePosition.y}.")
+        ihm.afficherNouvellePosition(position)
     }
 
     private fun changerGrille(transitionGrille: Pair<Grille, Position>) {

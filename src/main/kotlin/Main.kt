@@ -31,7 +31,13 @@ fun main() {
                 ihmDuPersonnage.afficherRecapitulatif(personnage)
 
                 carte.creerCarte()
-                val (deplacementService, deplacementUtilisateur) = creationDuJeu(sauvegardeJeu, personnage, carte, Position(0, 0))
+                val (deplacementService, deplacementUtilisateur) = creationDuJeu(
+                    sauvegardeJeu,
+                    personnage,
+                    carte,
+                    Position(0, 0),
+                    ihmDuJeu
+                )
 
                 if (deplacementUtilisateur != null && deplacementService != null) {
                     ihmDuJeu.afficherPosition(deplacementService)
@@ -43,7 +49,13 @@ fun main() {
                 personnage.nomDuPersonnage = donneesSauvegardeJeu.nomDuPersonnage
                 personnage.typeDuPersonnage = donneesSauvegardeJeu.typeDuPersonnage
                 carte = donneesSauvegardeJeu.carte
-                val (deplacementService, deplacementUtilisateur) = creationDuJeu(sauvegardeJeu, personnage, carte, donneesSauvegardeJeu.positionGrilleActuelle)
+                val (deplacementService, deplacementUtilisateur) = creationDuJeu(
+                    sauvegardeJeu,
+                    personnage,
+                    carte,
+                    donneesSauvegardeJeu.positionGrilleActuelle,
+                    ihmDuJeu
+                )
                 
                 if (deplacementUtilisateur != null && deplacementService != null) {
                     deplacementService.position = donneesSauvegardeJeu.position
@@ -65,10 +77,11 @@ private fun creationDuJeu(
     sauvegardeJeu: SauvegardeFichier,
     personnage: Personnage,
     carte: Carte,
-    positionGrille: Position
+    positionGrille: Position,
+    ihm: IHMDuJeu
 ): Pair<DeplacementService?, Deplacement?> {
     val sauvegardeService = SauvegardeService(sauvegardeJeu, personnage, carte)
-    val deplacementService = carte.obtenirGrille(positionGrille)?.let { DeplacementService(GestionTransitionGrille(carte), it, sauvegardeService)
+    val deplacementService = carte.obtenirGrille(positionGrille)?.let { DeplacementService(GestionTransitionGrille(carte), it, sauvegardeService, ihm)
     }
     val deplacementUtilisateur = deplacementService?.let { Deplacement(it) }
     return Pair(deplacementService, deplacementUtilisateur)

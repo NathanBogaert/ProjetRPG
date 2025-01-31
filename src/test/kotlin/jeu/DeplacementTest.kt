@@ -1,5 +1,7 @@
 package jeu
 
+import application.AffichageSimple
+import application.IHMDuJeu
 import domain.model.jeu.*
 import domain.model.personnage.Guerrier
 import domain.model.personnage.Personnage
@@ -20,6 +22,8 @@ class DeplacementTest {
     private lateinit var personnage: Personnage
     private lateinit var deplacementService: DeplacementService
     private lateinit var sauvegardeService: SauvegardeService
+    private lateinit var affichageSimple: AffichageSimple
+    private lateinit var ihm: IHMDuJeu
 
     @BeforeEach
     fun setUp() {
@@ -34,7 +38,9 @@ class DeplacementTest {
         personnage.typeDuPersonnage.classe = Guerrier()
         sauvegardeJeu = SauvegardeFichier()
         sauvegardeService = SauvegardeService(sauvegardeJeu, personnage, carte)
-        deplacementService = DeplacementService(gestionTransitionGrille, grille, sauvegardeService)
+        affichageSimple = AffichageSimple()
+        ihm = IHMDuJeu(affichageSimple)
+        deplacementService = DeplacementService(gestionTransitionGrille, grille, sauvegardeService, ihm)
         deplacement = Deplacement(deplacementService)
     }
 

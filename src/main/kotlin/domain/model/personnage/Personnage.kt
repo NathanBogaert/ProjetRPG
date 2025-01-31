@@ -1,6 +1,8 @@
 package domain.model.personnage
 
-class Personnage {
+class Personnage(
+    typeDuPersonnageFactory: TypeDuPersonnageFactory
+) {
     var nomDuPersonnage: NomDuPersonnage = NomDuPersonnage()
-    var typeDuPersonnage: TypeDuPersonnage = TypeDuPersonnage()
+    var typeDuPersonnage: TypeDuPersonnage = TypeDuPersonnage(typeDuPersonnageFactory)
 }

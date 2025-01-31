@@ -2,10 +2,12 @@ package application
 
 import domain.model.personnage.Guerrier
 import domain.model.personnage.Personnage
+import domain.model.personnage.TypeDuPersonnageFactory
 import org.junit.jupiter.api.Test
 
 class IHMDuPersonnageTest {
-    private val personnage = Personnage()
+    private val typeDuPersonnageFactory = TypeDuPersonnageFactory()
+    private val personnage = Personnage(typeDuPersonnageFactory)
     private val recapitulatifPersonnageIHM = RecapitulatifPersonnageIHM()
 
     @Test

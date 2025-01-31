@@ -1,10 +1,12 @@
 package personnage
 
 import domain.model.personnage.TypeDuPersonnage
+import domain.model.personnage.TypeDuPersonnageFactory
 import org.junit.jupiter.api.Test
 
 class TypeDuPersonnageTest {
-    private var typeDuPersonnage = TypeDuPersonnage()
+    private val typeDuPersonnageFactory = TypeDuPersonnageFactory()
+    private var typeDuPersonnage = TypeDuPersonnage(typeDuPersonnageFactory)
 
     @Test
     fun `Lorsque le joueur entre un type valide, le type est validé`() {

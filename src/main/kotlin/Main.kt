@@ -4,6 +4,7 @@ import domain.model.jeu.Deplacement
 import domain.model.jeu.GestionTransitionGrille
 import domain.model.jeu.Position
 import domain.model.personnage.Personnage
+import domain.model.personnage.TypeDuPersonnageFactory
 import domain.service.DeplacementService
 import domain.service.SauvegardeService
 import infrastructure.SauvegardeFichier
@@ -14,7 +15,8 @@ fun main() {
     var quitterJeu = false
     var choixMenu: String
     val sauvegardeJeu = SauvegardeFichier()
-    val personnage = Personnage()
+    val typeDuPersonnageFactory = TypeDuPersonnageFactory()
+    val personnage = Personnage(typeDuPersonnageFactory)
     var carte = Carte()
     val affichageSimple = AffichageSimple()
     val ihmDuJeu = IHMDuJeu(affichageSimple)

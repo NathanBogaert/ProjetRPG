@@ -5,6 +5,7 @@ import application.IHMDuJeu
 import domain.model.jeu.*
 import domain.model.personnage.Guerrier
 import domain.model.personnage.Personnage
+import domain.model.personnage.TypeDuPersonnageFactory
 import domain.port.serverside.SauvegardeDuJeu
 import domain.service.DeplacementService
 import domain.service.SauvegardeService
@@ -19,6 +20,7 @@ class DeplacementTest {
     private lateinit var gestionTransitionGrille: GestionTransitionGrille
     private lateinit var deplacement: Deplacement
     private lateinit var sauvegardeJeu: SauvegardeDuJeu
+    private lateinit var typeDuPersonnageFactory: TypeDuPersonnageFactory
     private lateinit var personnage: Personnage
     private lateinit var deplacementService: DeplacementService
     private lateinit var sauvegardeService: SauvegardeService
@@ -33,7 +35,8 @@ class DeplacementTest {
         carte.creerCarte()
         grille = carte.obtenirGrille(Position(0,0))!!
         gestionTransitionGrille = GestionTransitionGrille(carte)
-        personnage = Personnage()
+        typeDuPersonnageFactory = TypeDuPersonnageFactory()
+        personnage = Personnage(typeDuPersonnageFactory)
         personnage.nomDuPersonnage.nom = "nomtest"
         personnage.typeDuPersonnage.classe = Guerrier()
         sauvegardeJeu = SauvegardeFichier()

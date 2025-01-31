@@ -1,6 +1,4 @@
-import application.AffichageSimple
-import application.IHMDuJeu
-import application.IHMDuPersonnage
+import application.*
 import domain.model.jeu.Carte
 import domain.model.jeu.Deplacement
 import domain.model.jeu.GestionTransitionGrille
@@ -20,15 +18,17 @@ fun main() {
     var carte = Carte()
     val affichageSimple = AffichageSimple()
     val ihmDuJeu = IHMDuJeu(affichageSimple)
-    val ihmDuPersonnage = IHMDuPersonnage(affichageSimple)
+    val creationPersonnageIHM = CreationPersonnageIHM(affichageSimple)
+    val recapitulatifPersonnageIHM = RecapitulatifPersonnageIHM()
+    val affichagePersonnageIHM = AffichagePersonnageIHM(affichageSimple, recapitulatifPersonnageIHM)
 
     while (!quitterJeu) {
         choixMenu = ihmDuJeu.afficherMenuPrincipal()
         when {
             nouvellePartie(choixMenu) -> {
-                ihmDuPersonnage.creationDuNom(personnage)
-                ihmDuPersonnage.creationDuType(personnage)
-                ihmDuPersonnage.afficherRecapitulatif(personnage)
+                creationPersonnageIHM.creationDuNom(personnage)
+                creationPersonnageIHM.creationDuType(personnage)
+                affichagePersonnageIHM.afficherRecapitulatif(personnage)
 
                 carte.creerCarte()
                 val (deplacementService, deplacementUtilisateur) = creationDuJeu(
@@ -60,7 +60,7 @@ fun main() {
                 if (deplacementUtilisateur != null && deplacementService != null) {
                     deplacementService.position = donneesSauvegardeJeu.position
                     deplacementUtilisateur.direction = donneesSauvegardeJeu.direction
-                    ihmDuPersonnage.afficherRecapitulatif(personnage)
+                    affichagePersonnageIHM.afficherRecapitulatif(personnage)
                     ihmDuJeu.afficherPosition(deplacementService)
                     ihmDuJeu.lancerJeu(deplacementUtilisateur)
                 }

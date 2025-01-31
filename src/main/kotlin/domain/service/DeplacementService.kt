@@ -13,15 +13,7 @@ class DeplacementService(
 
     override fun deplacer(direction: Direction) {
         val nouvellePosition = position.copy().apply { mouvement(direction) }
-        if (!grilleActuelle.positionValide(nouvellePosition)) {
-            val transitionGrille = gestionTransitionGrille.calculerTransitionGrille(direction, position, grilleActuelle)
-            if (transitionGrille != null) {
-                changerGrille(transitionGrille)
-            } else {
-                ihm.afficherAtteinteBordDuMonde(direction)
-            }
-            return
-        }
+        if (verifierTransitionGrille(nouvellePosition, direction)) return
 
         when (grilleActuelle.obtenirContenu(nouvellePosition)) {
             Vide, null -> changerPosition(nouvellePosition)
@@ -34,6 +26,19 @@ class DeplacementService(
         }
 
         sauvegardeService.sauvegarde(position, direction, grilleActuelle)
+    }
+
+    private fun verifierTransitionGrille(nouvellePosition: Position, direction: Direction): Boolean {
+        if (!grilleActuelle.positionValide(nouvellePosition)) {
+            val transitionGrille = gestionTransitionGrille.calculerTransitionGrille(direction, position, grilleActuelle)
+            if (transitionGrille != null) {
+                changerGrille(transitionGrille)
+            } else {
+                ihm.afficherAtteinteBordDuMonde(direction)
+            }
+            return true
+        }
+        return false
     }
 
     private fun changerPosition(nouvellePosition: Position) {
